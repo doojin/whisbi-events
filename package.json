@@ -10,7 +10,6 @@
   },
   "homepage": "https://github.com/doojin/whisbi-events#readme",
   "devDependencies": {
-    "@types/express": "^4.17.11",
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "eslint": "^7.22.0",
@@ -22,8 +21,5 @@
     "lerna": "^3.22.1",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.5.3"
-  },
-  "dependencies": {
-    "express": "^4.17.1"
   }
 }
