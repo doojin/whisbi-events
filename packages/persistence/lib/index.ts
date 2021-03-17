@@ -5,6 +5,7 @@ import {
   Connection
 } from 'typeorm'
 import User from './entity/User'
+import Token from './entity/Token'
 
 export async function createConnection (
   database: string,
@@ -29,5 +30,6 @@ export function getConnection (): Connection {
 }
 
 export {
-  User
+  User,
+  Token
 }

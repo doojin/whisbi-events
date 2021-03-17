@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm'
+import Token from './Token'
 
 @Entity()
 export default class User {
@@ -10,4 +11,7 @@ export default class User {
 
   @Column()
   photo!: string
+
+  @OneToOne(() => Token, token => token.user)
+  token!: Token
 }
