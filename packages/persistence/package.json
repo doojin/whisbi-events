@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "lint": "eslint src/**/*.ts",
+    "lint": "eslint lib/**/*.ts",
     "test": "jest --silent"
   },
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "files": [
-    "lib"
+    "dist"
   ],
   "repository": {
     "type": "git",
