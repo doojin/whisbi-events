@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany } from 'typeorm'
 import Token from './Token'
+import Event from './Event'
 
 @Entity()
 export default class User {
@@ -14,4 +15,7 @@ export default class User {
 
   @OneToOne(() => Token, token => token.user)
   token!: Token
+
+  @OneToMany(() => Event, event => event.user)
+  events!: Event[]
 }
