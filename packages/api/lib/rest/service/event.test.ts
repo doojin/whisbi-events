@@ -1,6 +1,7 @@
 import eventService from './event'
-import { getEventRepository, User } from '@whisbi-events/persistence'
+import { getEventRepository, User, Event } from '@whisbi-events/persistence'
 import HttpError from '../error/HttpError'
+import EventState from '@whisbi-events/persistence/dist/entity/EventState'
 
 jest.mock('@whisbi-events/persistence')
 
@@ -39,13 +40,38 @@ describe('event service', () => {
     })
 
     describe('user has non-draft event', () => {
+      let eventData: Partial<Event>
+
       beforeEach(() => {
         eventRepository.hasNonDraftUserEvents.mockResolvedValue(true)
       })
 
-      test('throws exception', async () => {
-        await expect(eventService.create({ id: 13, headline: 'test event' }, new User()))
-          .rejects.toEqual(new HttpError(400, 'User can have only one non-draft event at a time'))
+      describe('user creates another non-draft event', () => {
+        beforeEach(() => {
+          eventData = {
+            headline: 'test event',
+            state: EventState.PRIVATE
+          }
+        })
+
+        test('throws error', async () => {
+          await expect(eventService.create(eventData, new User()))
+            .rejects.toEqual(new HttpError(400, 'User can have only one non-draft event at a time'))
+        })
+      })
+
+      describe('user creates draft event', () => {
+        beforeEach(() => {
+          eventData = {
+            headline: 'test event',
+            state: EventState.DRAFT
+          }
+        })
+
+        test('No error is thrown', async () => {
+          await eventService.create(eventData, new User())
+          expect(eventRepository.save).toHaveBeenCalledTimes(1)
+        })
       })
     })
   })
