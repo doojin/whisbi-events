@@ -1,5 +1,6 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  clearMocks: true
+  clearMocks: true,
+  globalSetup: './jest.setup.ts'
 }
