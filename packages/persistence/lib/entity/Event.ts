@@ -19,7 +19,7 @@ export default class Event {
   @Column()
   location!: string
 
-  @Column({ type: 'enum', enum: EventState })
+  @Column({ type: 'enum', enum: EventState, default: EventState.DRAFT })
   state!: EventState
 
   @ManyToOne(() => User, user => user.events)

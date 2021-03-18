@@ -4,6 +4,7 @@ import bodyParser from 'body-parser'
 import createEvent from './endpoint/createEvent'
 import authenticate from './authentication/index'
 import authenticated from './rules/authenticated'
+import validEventEntity from './rules/event/validEventEntity'
 
 export default {
   start (port: number) {
@@ -15,7 +16,7 @@ export default {
     app.use(authenticate())
 
     app.use('/api/v1', router)
-    router.post('/event', authenticated, createEvent)
+    router.post('/event', authenticated, validEventEntity, createEvent)
 
     return app.listen(port, () => {
       console.log(`REST service started on port: ${port}`)
