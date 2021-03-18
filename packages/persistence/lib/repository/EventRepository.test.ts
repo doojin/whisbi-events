@@ -51,10 +51,10 @@ describe('user repository', () => {
     await connection.close()
   })
 
-  describe('getNonDraftEventCount', () => {
+  describe('hasNonDraftUserEvents', () => {
     let user: User
 
-    describe('user has events', () => {
+    describe('user has non draft events', () => {
       beforeEach(async () => {
         user = await generateUser()
         await generateUserEvent(user, EventState.DRAFT)
@@ -65,9 +65,23 @@ describe('user repository', () => {
         await generateUserEvent(user, EventState.PRIVATE)
       })
 
-      test('returns count of non-draft events', async () => {
-        const count = await eventRepository.getNonDraftEventCount(user.id)
-        expect(count).toEqual(3)
+      test('returns true', async () => {
+        const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
+        expect(hasNonDraftEvents).toBeTruthy()
+      })
+    })
+
+    describe('all user events are draft', () => {
+      beforeEach(async () => {
+        user = await generateUser()
+        await generateUserEvent(user, EventState.DRAFT)
+        await generateUserEvent(user, EventState.DRAFT)
+        await generateUserEvent(user, EventState.DRAFT)
+      })
+
+      test('returns false', async () => {
+        const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
+        expect(hasNonDraftEvents).toBeFalsy()
       })
     })
 
@@ -76,9 +90,9 @@ describe('user repository', () => {
         user = await generateUser()
       })
 
-      test('returns zero count', async () => {
-        const count = await eventRepository.getNonDraftEventCount(user.id)
-        expect(count).toEqual(0)
+      test('returns false', async () => {
+        const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
+        expect(hasNonDraftEvents).toBeFalsy()
       })
     })
   })
