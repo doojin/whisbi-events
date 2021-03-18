@@ -4,7 +4,7 @@
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "lint": "eslint lib/**/*.ts",
-    "test": "jest --silent"
+    "test": "jest --runInBand"
   },
   "main": "dist/index.js",
   "dependencies": {

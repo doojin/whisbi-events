@@ -10,7 +10,8 @@ describe('event service', () => {
   beforeEach(() => {
     eventRepository = {
       create: jest.fn(),
-      save: jest.fn(),
+      save: jest.fn().mockResolvedValue({ id: 13 }),
+      findOne: jest.fn(),
       hasNonDraftUserEvents: jest.fn()
     };
 

@@ -7,9 +7,9 @@ const createEvent: Handler = async (req: Request, res: Response): Promise<void> 
   const eventData: Partial<Event> = req.body
   const user = req.user as User
 
-  await eventService.create(eventData, user)
+  const event = await eventService.create(eventData, user)
 
-  res.status(201).send()
+  res.status(201).json(event)
 }
 
 export default asyncHandler(createEvent)

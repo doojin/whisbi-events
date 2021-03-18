@@ -10,6 +10,8 @@ describe('event creation endpoint', () => {
   let app: Express
 
   beforeEach(() => {
+    (eventService.create as jest.Mock).mockResolvedValue({ headline: 'test-headline' })
+
     app = express()
     app.use(bodyParser.json())
     app.use((req, res, next) => {
@@ -27,6 +29,7 @@ describe('event creation endpoint', () => {
         headline: 'test headline'
       })
       .expect(201)
+      .expect({ headline: 'test-headline' })
 
     expect(eventService.create).toHaveBeenCalledTimes(1)
     expect(eventService.create).toHaveBeenCalledWith({ headline: 'test headline' }, { name: 'test user' })
