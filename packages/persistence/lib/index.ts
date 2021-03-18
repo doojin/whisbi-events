@@ -1,11 +1,14 @@
 import path from 'path'
 import {
   createConnection as createDatabaseConnection,
-  getConnection as getDatabaseConnection,
-  Connection
+  getCustomRepository,
+  getRepository,
+  Repository
 } from 'typeorm'
 import User from './entity/User'
 import Token from './entity/Token'
+import Event from './entity/Event'
+import UserRepository from './repository/UserRepository'
 
 export async function createConnection (
   database: string,
@@ -25,11 +28,12 @@ export async function createConnection (
   })
 }
 
-export function getConnection (): Connection {
-  return getDatabaseConnection()
+export function getUserRepository (): UserRepository {
+  return getCustomRepository(UserRepository)
 }
 
-export {
-  User,
-  Token
+export function getEventRepository (): Repository<Event> {
+  return getRepository(Event)
 }
+
+export { User, Token, Event }
