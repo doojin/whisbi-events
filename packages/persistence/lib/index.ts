@@ -9,6 +9,7 @@ import User from './entity/User'
 import Token from './entity/Token'
 import Event from './entity/Event'
 import UserRepository from './repository/UserRepository'
+import EventRepository from './repository/EventRepository'
 
 export async function createConnection (
   database: string,
@@ -34,8 +35,8 @@ export function getUserRepository (): UserRepository {
   return getCustomRepository(UserRepository)
 }
 
-export function getEventRepository (): Repository<Event> {
-  return getRepository(Event)
+export function getEventRepository (): EventRepository {
+  return getCustomRepository(EventRepository)
 }
 
 export function getTokenRepository (): Repository<Token> {
