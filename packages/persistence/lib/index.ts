@@ -14,7 +14,8 @@ export async function createConnection (
   database: string,
   username: string,
   password: string,
-  synchronize: boolean = false
+  synchronize: boolean = false,
+  dropSchema: boolean = false
 ): Promise<void> {
   await createDatabaseConnection({
     type: 'mysql',
@@ -24,7 +25,8 @@ export async function createConnection (
     entities: [
       path.join(__dirname, '../dist/entity/*.js')
     ],
-    synchronize
+    synchronize,
+    dropSchema
   })
 }
 
@@ -34,6 +36,10 @@ export function getUserRepository (): UserRepository {
 
 export function getEventRepository (): Repository<Event> {
   return getRepository(Event)
+}
+
+export function getTokenRepository (): Repository<Token> {
+  return getRepository(Token)
 }
 
 export { User, Token, Event }
