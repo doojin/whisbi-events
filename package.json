@@ -1,14 +1,9 @@
 {
   "name": "@doojin/whisbi-events",
   "version": "1.0.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/doojin/whisbi-events.git"
+  "scripts": {
+    "compile": "lerna run build"
   },
-  "bugs": {
-    "url": "https://github.com/doojin/whisbi-events/issues"
-  },
-  "homepage": "https://github.com/doojin/whisbi-events#readme",
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
