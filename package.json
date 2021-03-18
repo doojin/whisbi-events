@@ -2,7 +2,8 @@
   "name": "@doojin/whisbi-events",
   "version": "1.0.0",
   "scripts": {
-    "compile": "lerna run build"
+    "compile": "lerna run build",
+    "test": "lerna run test"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

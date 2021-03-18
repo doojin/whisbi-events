@@ -1,5 +1,5 @@
 import { Event, getEventRepository, User } from '@whisbi-events/persistence'
-import HttpError from '../HttpError'
+import HttpError from '../error/HttpError'
 
 export default {
   async create (eventData: Partial<Event>, user: User): Promise<void> {

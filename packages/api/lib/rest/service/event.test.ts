@@ -1,6 +1,6 @@
 import eventService from './event'
 import { getEventRepository, User } from '@whisbi-events/persistence'
-import HttpError from '../HttpError'
+import HttpError from '../error/HttpError'
 
 jest.mock('@whisbi-events/persistence')
 
