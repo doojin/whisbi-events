@@ -5,6 +5,7 @@ import createEvent from './endpoint/createEvent'
 import authenticate from './authentication/index'
 import authenticated from './rules/authenticated'
 import validEventEntity from './rules/event/validEventEntity'
+import onePublishedEventPerUser from './rules/event/onePublishedEventPerUser'
 
 export default {
   start (port: number) {
@@ -16,7 +17,7 @@ export default {
     app.use(authenticate())
 
     app.use('/api/v1', router)
-    router.post('/event', authenticated, validEventEntity, createEvent)
+    router.post('/event', authenticated, onePublishedEventPerUser, validEventEntity, createEvent)
 
     return app.listen(port, () => {
       console.log(`REST service started on port: ${port}`)
