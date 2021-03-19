@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, Handler } from 'express'
 import { Event } from '@whisbi-events/persistence'
+import asyncHandler from '../../error/asyncHandler'
 
 const requiredProperties = [
   'headline',
@@ -26,4 +27,4 @@ const isValidEventEntity: Handler = (req: Request, res: Response, next: NextFunc
   next()
 }
 
-export default isValidEventEntity
+export default asyncHandler(isValidEventEntity)

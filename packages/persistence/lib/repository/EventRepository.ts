@@ -10,4 +10,11 @@ export default class EventRepository extends Repository<Event> {
       .innerJoin('event.user', 'user', 'user.id = :userId', { userId })
       .getCount() > 0
   }
+
+  async findOneAndJoinWithUser (id): Promise<Event | undefined> {
+    return await this.createQueryBuilder('event')
+      .where('event.id = :id', { id })
+      .innerJoinAndSelect('event.user', 'user')
+      .getOne()
+  }
 }

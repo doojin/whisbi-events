@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, Handler } from 'express'
 import { User, getEventRepository } from '@whisbi-events/persistence'
 import { isDraft } from '../../util/event'
+import asyncHandler from '../../error/asyncHandler'
 
 const onePublishedEventPerUser: Handler = async (req: Request, res: Response, next: NextFunction) => {
   const { id: userId } = req.user as User
@@ -14,4 +15,4 @@ const onePublishedEventPerUser: Handler = async (req: Request, res: Response, ne
   next()
 }
 
-export default onePublishedEventPerUser
+export default asyncHandler(onePublishedEventPerUser)

@@ -1,4 +1,5 @@
 import { Request, Response, Handler, NextFunction } from 'express'
+import asyncHandler from '../error/asyncHandler'
 
 const authenticated: Handler = (req: Request, res: Response, next: NextFunction) => {
   if (req.user === undefined) {
@@ -11,4 +12,4 @@ const authenticated: Handler = (req: Request, res: Response, next: NextFunction)
   next()
 }
 
-export default authenticated
+export default asyncHandler(authenticated)

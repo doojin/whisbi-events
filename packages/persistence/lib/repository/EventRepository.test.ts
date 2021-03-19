@@ -23,7 +23,7 @@ describe('user repository', () => {
     event.headline = 'test-headline'
     event.description = 'test-description'
     event.location = 'test-location'
-    event.startDate = new Date()
+    event.startDate = new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0))
     event.user = user
     return await eventRepository.save(event)
   }
@@ -93,6 +93,29 @@ describe('user repository', () => {
       test('returns false', async () => {
         const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
         expect(hasNonDraftEvents).toBeFalsy()
+      })
+    })
+  })
+
+  describe('findOneAndJoinWithUser', () => {
+    test('returns event and it\'s owner data', async () => {
+      const user = await generateUser()
+      const event = await generateUserEvent(user, EventState.PUBLIC)
+
+      const foundEvent = await eventRepository.findOneAndJoinWithUser(event.id)
+
+      expect(foundEvent).toEqual({
+        id: 1,
+        headline: 'test-headline',
+        description: 'test-description',
+        location: 'test-location',
+        startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+        state: EventState.PUBLIC,
+        user: {
+          id: 1,
+          name: 'test-user',
+          photo: 'test-photo'
+        }
       })
     })
   })
