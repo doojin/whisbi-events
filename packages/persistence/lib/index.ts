@@ -8,6 +8,7 @@ import {
 import User from './entity/User'
 import Token from './entity/Token'
 import Event from './entity/Event'
+import EventState from './entity/EventState'
 import UserRepository from './repository/UserRepository'
 import EventRepository from './repository/EventRepository'
 
@@ -43,4 +44,4 @@ export function getTokenRepository (): Repository<Token> {
   return getRepository(Token)
 }
 
-export { User, Token, Event }
+export { User, Token, Event, EventState }
