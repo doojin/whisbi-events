@@ -10,8 +10,11 @@ describe('event service', () => {
 
   beforeEach(() => {
     eventRepository = {
-      create: jest.fn(),
-      save: jest.fn().mockResolvedValue({ id: 13 }),
+      insert: jest.fn().mockResolvedValue({
+        raw: {
+          insertId: 13
+        }
+      }),
       findOne: jest.fn(),
       hasNonDraftUserEvents: jest.fn()
     };
@@ -25,21 +28,20 @@ describe('event service', () => {
         eventRepository.hasNonDraftUserEvents.mockResolvedValue(false)
       })
 
-      test('creates user event', async () => {
+      test('inserts new user event', async () => {
         const user: User = new User()
 
         await eventService.create({ id: 13, headline: 'test event' }, user)
 
-        expect(eventRepository.create).toHaveBeenCalledTimes(1)
-        expect(eventRepository.create).toHaveBeenCalledWith({
+        expect(eventRepository.insert).toHaveBeenCalledTimes(1)
+        expect(eventRepository.insert).toHaveBeenCalledWith({
           headline: 'test event',
           user
         })
-        expect(eventRepository.save).toHaveBeenCalledTimes(1)
       })
     })
 
-    describe('user has non-draft event', () => {
+    describe('user has existing non-draft event', () => {
       let eventData: Partial<Event>
 
       beforeEach(() => {
@@ -70,7 +72,7 @@ describe('event service', () => {
 
         test('No error is thrown', async () => {
           await eventService.create(eventData, new User())
-          expect(eventRepository.save).toHaveBeenCalledTimes(1)
+          expect(eventRepository.insert).toHaveBeenCalledTimes(1)
         })
       })
     })
