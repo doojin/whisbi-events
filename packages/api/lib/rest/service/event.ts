@@ -6,6 +6,7 @@ export default {
   async create (eventData: Partial<Event>, user: User): Promise<Event> {
     const eventRepository = getEventRepository()
 
+    // User can have multiple draft events but only one published
     if (!isDraft(eventData) && await eventRepository.hasNonDraftUserEvents(user.id)) {
       throw new HttpError(400, 'User can have only one non-draft event at a time')
     }
