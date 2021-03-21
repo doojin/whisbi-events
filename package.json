@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "compile": "lerna run build",
-    "test": "lerna run test"
+    "test": "jest --runInBand"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

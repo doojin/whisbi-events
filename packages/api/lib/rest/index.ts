@@ -10,6 +10,7 @@ import existingEvent from './rules/event/existingEvent'
 import draftEventVisibleOnlyByOwner from './rules/event/draftEventVisibleOnlyByOwner'
 import privateEventVisibleOnlyByAuthenticated from './rules/event/privateEventVisibleOnlyByAuthenticated'
 import getSingleEvent from './endpoint/getSingleEvent'
+import userIsEventOwner from './rules/event/userIsEventOwner'
 
 export default {
   start (port: number) {
@@ -38,6 +39,26 @@ export default {
       draftEventVisibleOnlyByOwner,
       privateEventVisibleOnlyByAuthenticated,
       getSingleEvent
+    )
+
+    // Delete existing event
+    router.delete(
+      '/event/:id',
+      authenticated,
+      existingEvent,
+      userIsEventOwner,
+      deleteEvent
+    )
+
+    // Update existing event
+    router.put(
+      '/event/:id',
+      authenticated,
+      existingEvent,
+      userIsEventOwner,
+      onePublishedEventPerUser,
+      validEventEntity,
+      updateEvent
     )
 
     return app.listen(port, () => {
