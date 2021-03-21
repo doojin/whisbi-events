@@ -1,5 +1,6 @@
 import { Handler, Request, Response, NextFunction } from 'express'
 import { User, Event } from '@whisbi-events/persistence'
+import asyncHandler from '../../error/asyncHandler'
 
 const userIsEventOwner: Handler = async (req: Request, res: Response, next: NextFunction) => {
   const event: Event = res.locals.event
@@ -13,4 +14,4 @@ const userIsEventOwner: Handler = async (req: Request, res: Response, next: Next
   next()
 }
 
-export default userIsEventOwner
+export default asyncHandler(userIsEventOwner)
