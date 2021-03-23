@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import onePublishedEventPerUser from './onePublishedEventPerUser'
-import { getEventRepository } from '@whisbi-events/persistence'
+import { EventState, getEventRepository } from '@whisbi-events/persistence'
 
 jest.mock('@whisbi-events/persistence')
 
@@ -12,12 +12,17 @@ describe('one published event rule', () => {
 
   beforeEach(() => {
     eventRepository = {
-      hasNonDraftUserEvents: jest.fn()
+      getExistingUserNonDraftEventId: jest.fn()
     };
 
     (getEventRepository as jest.Mock).mockReturnValue(eventRepository)
 
-    req = { user: {} } as any as Request
+    req = {
+      user: {},
+      params: {
+        id: '13'
+      }
+    } as any as Request
 
     res = {
       status: jest.fn().mockReturnThis() as Function,
@@ -27,57 +32,35 @@ describe('one published event rule', () => {
     next = jest.fn()
   })
 
-  describe('user has published event', () => {
+  describe('creating/updating event is draft', () => {
     beforeEach(() => {
-      eventRepository.hasNonDraftUserEvents.mockResolvedValue(true)
+      req.body = {
+        state: EventState.DRAFT
+      }
     })
 
-    describe('user tries to create draft event', () => {
-      beforeEach(() => {
-        req.body = {
-          state: 'draft'
-        }
-      })
+    test('not sends any error', async () => {
+      await onePublishedEventPerUser(req, res, next)
 
-      test('not sends error message', async () => {
-        await onePublishedEventPerUser(req, res, next)
-
-        expect(res.status).not.toHaveBeenCalled()
-        expect(res.json).not.toHaveBeenCalled()
-        expect(next).toHaveBeenCalledTimes(1)
-      })
-    })
-
-    describe('user tries to create non-draft event', () => {
-      beforeEach(() => {
-        req.body = {
-          state: 'public'
-        }
-      })
-
-      test('sends error message', async () => {
-        await onePublishedEventPerUser(req, res, next)
-
-        expect(res.status).toHaveBeenCalledWith(400)
-        expect(res.json).toHaveBeenCalledWith({ message: 'User can have only one published event at a time' })
-        expect(next).not.toHaveBeenCalled()
-      })
+      expect(res.status).not.toHaveBeenCalled()
+      expect(res.json).not.toHaveBeenCalled()
+      expect(next).toHaveBeenCalledTimes(1)
     })
   })
 
-  describe('user has no published events', () => {
+  describe('creating/updating event is not draft', () => {
     beforeEach(() => {
-      eventRepository.hasNonDraftUserEvents.mockResolvedValue(false)
+      req.body = {
+        state: EventState.PRIVATE
+      }
     })
 
-    describe('user tries to create draft event', () => {
+    describe('user has no existing events', () => {
       beforeEach(() => {
-        req.body = {
-          state: 'draft'
-        }
+        eventRepository.getExistingUserNonDraftEventId.mockResolvedValue(undefined)
       })
 
-      test('not sends error message', async () => {
+      test('not sends any error', async () => {
         await onePublishedEventPerUser(req, res, next)
 
         expect(res.status).not.toHaveBeenCalled()
@@ -86,19 +69,33 @@ describe('one published event rule', () => {
       })
     })
 
-    describe('user tries to create non-draft event', () => {
-      beforeEach(() => {
-        req.body = {
-          state: 'public'
-        }
+    describe('user has existing non-draft event', () => {
+      describe('existing non-draft event is the one that user tries to update', () => {
+        beforeEach(() => {
+          eventRepository.getExistingUserNonDraftEventId.mockResolvedValue(13)
+        })
+
+        test('not sends any error', async () => {
+          await onePublishedEventPerUser(req, res, next)
+
+          expect(res.status).not.toHaveBeenCalled()
+          expect(res.json).not.toHaveBeenCalled()
+          expect(next).toHaveBeenCalledTimes(1)
+        })
       })
 
-      test('not sends error message', async () => {
-        await onePublishedEventPerUser(req, res, next)
+      describe('existing non-draft event differs from the one that user tries to update', () => {
+        beforeEach(() => {
+          eventRepository.getExistingUserNonDraftEventId.mockResolvedValue(14)
+        })
 
-        expect(res.status).not.toHaveBeenCalled()
-        expect(res.json).not.toHaveBeenCalled()
-        expect(next).toHaveBeenCalledTimes(1)
+        test('sends an error', async () => {
+          await onePublishedEventPerUser(req, res, next)
+
+          expect(res.status).toHaveBeenCalledWith(400)
+          expect(res.json).toHaveBeenCalledWith({ message: 'User can have only one published event at a time' })
+          expect(next).not.toHaveBeenCalled()
+        })
       })
     })
   })

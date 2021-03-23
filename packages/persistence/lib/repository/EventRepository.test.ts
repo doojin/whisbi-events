@@ -51,52 +51,6 @@ describe('user repository', () => {
     await connection.close()
   })
 
-  describe('hasNonDraftUserEvents', () => {
-    let user: User
-
-    describe('user has non draft events', () => {
-      beforeEach(async () => {
-        user = await generateUser()
-        await generateUserEvent(user, EventState.DRAFT)
-        await generateUserEvent(user, EventState.DRAFT)
-        await generateUserEvent(user, EventState.DRAFT)
-        await generateUserEvent(user, EventState.PUBLIC)
-        await generateUserEvent(user, EventState.PUBLIC)
-        await generateUserEvent(user, EventState.PRIVATE)
-      })
-
-      test('returns true', async () => {
-        const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
-        expect(hasNonDraftEvents).toBeTruthy()
-      })
-    })
-
-    describe('all user events are draft', () => {
-      beforeEach(async () => {
-        user = await generateUser()
-        await generateUserEvent(user, EventState.DRAFT)
-        await generateUserEvent(user, EventState.DRAFT)
-        await generateUserEvent(user, EventState.DRAFT)
-      })
-
-      test('returns false', async () => {
-        const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
-        expect(hasNonDraftEvents).toBeFalsy()
-      })
-    })
-
-    describe('user has no events', () => {
-      beforeEach(async () => {
-        user = await generateUser()
-      })
-
-      test('returns false', async () => {
-        const hasNonDraftEvents = await eventRepository.hasNonDraftUserEvents(user.id)
-        expect(hasNonDraftEvents).toBeFalsy()
-      })
-    })
-  })
-
   describe('findOneAndJoinWithUser', () => {
     test('returns event and it\'s owner data', async () => {
       const user = await generateUser()
@@ -116,6 +70,31 @@ describe('user repository', () => {
           name: 'test-user',
           photo: 'test-photo'
         }
+      })
+    })
+  })
+
+  describe('getExistingUserNonDraftEventId', () => {
+    describe('user non draft event exists', () => {
+      test('returns event id', async () => {
+        const user = await generateUser()
+        await generateUserEvent(user, EventState.DRAFT)
+        const nonDraftEvent = await generateUserEvent(user, EventState.PRIVATE)
+
+        const nonDraftEventId = await eventRepository.getExistingUserNonDraftEventId(user.id)
+
+        expect(nonDraftEventId).toEqual(nonDraftEvent.id)
+      })
+    })
+
+    describe('user non draft event not exists', () => {
+      test('returns undefined', async () => {
+        const user = await generateUser()
+        await generateUserEvent(user, EventState.DRAFT)
+
+        const nonDraftEventId = await eventRepository.getExistingUserNonDraftEventId(user.id)
+
+        expect(nonDraftEventId).toBeUndefined()
       })
     })
   })

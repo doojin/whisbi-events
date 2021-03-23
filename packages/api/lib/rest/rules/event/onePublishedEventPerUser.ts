@@ -5,9 +5,13 @@ import asyncHandler from '../../error/asyncHandler'
 
 const onePublishedEventPerUser: Handler = async (req: Request, res: Response, next: NextFunction) => {
   const { id: userId } = req.user as User
-  const hasNonDraftEvents = await getEventRepository().hasNonDraftUserEvents(userId)
+  const updatingEventId: string|undefined = req.params.id
+  const existingEventId = await getEventRepository().getExistingUserNonDraftEventId(userId)
 
-  if (!isDraft(req.body) && hasNonDraftEvents) {
+  // The event entity we try to create/update has non-draft (public/private) state AND
+  // Event with public/private state already exists for this user AND
+  // The existing event is not the one we try to update now
+  if (!isDraft(req.body) && existingEventId !== undefined && (existingEventId.toString() !== updatingEventId)) {
     res.status(400).json({ message: 'User can have only one published event at a time' })
     return
   }

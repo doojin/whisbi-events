@@ -11,6 +11,8 @@ import draftEventVisibleOnlyByOwner from './rules/event/draftEventVisibleOnlyByO
 import privateEventVisibleOnlyByAuthenticated from './rules/event/privateEventVisibleOnlyByAuthenticated'
 import getSingleEvent from './endpoint/getSingleEvent'
 import userIsEventOwner from './rules/event/userIsEventOwner'
+import updateEvent from './endpoint/updateEvent'
+import deleteEvent from './endpoint/deleteEvent'
 
 export default {
   start (port: number) {

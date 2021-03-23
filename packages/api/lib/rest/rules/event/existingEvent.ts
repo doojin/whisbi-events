@@ -12,7 +12,7 @@ const existingEvent: Handler = async (req: Request, res: Response, next: NextFun
     return
   }
 
-  // To avoid querying database multiple times in the next middlewares, lets assign event to res.locals
+  // To avoid querying database multiple times in the next middleware, lets assign event to res.locals
   // From express docs:
   // This property is useful for exposing request-level information such as the request path name, authenticated user,
   // user settings, and so on.
