@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import getMultipleEvents from './getMultipleEvents'
-import {EventState, getEventRepository} from '@whisbi-events/persistence'
+import { EventState, getEventRepository } from '@whisbi-events/persistence'
 
 jest.mock('@whisbi-events/persistence')
 
