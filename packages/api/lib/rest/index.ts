@@ -17,6 +17,7 @@ import getMultipleEvents from './endpoint/getMultipleEvents'
 import createSubscription from './endpoint/createSubscription'
 import currentUserCantBeEventOwner from './rules/event/currentUserCantBeEventOwner'
 import cantSubscribeTwice from './rules/event/subscription/cantSubscribeTwice'
+import maxSubscriptions from './rules/event/subscription/maxSubscriptions'
 
 export default {
   start (port: number) {
@@ -81,6 +82,7 @@ export default {
       draftEventVisibleOnlyByOwner,
       currentUserCantBeEventOwner,
       cantSubscribeTwice,
+      maxSubscriptions(3),
       createSubscription
     )
 
