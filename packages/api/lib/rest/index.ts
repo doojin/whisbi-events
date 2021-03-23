@@ -14,6 +14,7 @@ import userIsEventOwner from './rules/event/userIsEventOwner'
 import updateEvent from './endpoint/updateEvent'
 import deleteEvent from './endpoint/deleteEvent'
 import getMultipleEvents from './endpoint/getMultipleEvents'
+import createSubscription from './endpoint/createSubscription'
 
 export default {
   start (port: number) {
@@ -37,7 +38,7 @@ export default {
 
     // Get existing event
     router.get(
-      '/event/:id',
+      '/event/:eventId',
       existingEvent,
       draftEventVisibleOnlyByOwner,
       privateEventVisibleOnlyByAuthenticated,
@@ -46,7 +47,7 @@ export default {
 
     // Delete existing event
     router.delete(
-      '/event/:id',
+      '/event/:eventId',
       authenticated,
       existingEvent,
       userIsEventOwner,
@@ -55,7 +56,7 @@ export default {
 
     // Update existing event
     router.put(
-      '/event/:id',
+      '/event/:eventId',
       authenticated,
       existingEvent,
       userIsEventOwner,
@@ -68,6 +69,15 @@ export default {
     router.get(
       '/event',
       getMultipleEvents
+    )
+
+    // Create event subscription
+    router.post(
+      '/event/:eventId/subscription',
+      authenticated,
+      existingEvent,
+      draftEventVisibleOnlyByOwner,
+      createSubscription
     )
 
     return app.listen(port, () => {

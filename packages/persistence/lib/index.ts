@@ -49,4 +49,4 @@ export function getSubscriptionRepository (): Repository<Subscription> {
   return getRepository(Subscription)
 }
 
-export { User, Token, Event, EventState }
+export { User, Token, Event, EventState, Subscription }

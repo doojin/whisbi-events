@@ -19,7 +19,7 @@ describe('event with given id should exist rule', () => {
 
     req = {
       params: {
-        id: '13'
+        eventId: '13'
       }
     } as any as Request
 

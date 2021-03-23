@@ -3,7 +3,7 @@ import { getEventRepository } from '@whisbi-events/persistence'
 import asyncHandler from '../../error/asyncHandler'
 
 const existingEvent: Handler = async (req: Request, res: Response, next: NextFunction) => {
-  const id = req.params.id
+  const id = req.params.eventId
 
   const event = await getEventRepository().findOneAndJoinWithUser(id)
 
