@@ -7,7 +7,7 @@ const userIsEventOwner: Handler = async (req: Request, res: Response, next: Next
   const currentUser = req.user as User
 
   if (currentUser === undefined || currentUser.id !== event.user.id) {
-    res.status(403).json({ message: 'This operation is accessible only by event owner' })
+    res.status(403).json({ error: 'This operation is accessible only by event owner' })
     return
   }
 

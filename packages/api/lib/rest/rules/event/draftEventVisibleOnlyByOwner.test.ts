@@ -55,7 +55,7 @@ describe('draft event visible only by it\'s owner rule', () => {
       test('sends an error', async () => {
         await draftEventVisibleOnlyByOwner(req, res, next)
         expect(res.status).toHaveBeenCalledWith(403)
-        expect(res.json).toHaveBeenCalledWith({ message: 'Draft event can be only accessed by event owner' })
+        expect(res.json).toHaveBeenCalledWith({ error: 'Draft event can be only accessed by event owner' })
         expect(next).not.toHaveBeenCalled()
       })
     })

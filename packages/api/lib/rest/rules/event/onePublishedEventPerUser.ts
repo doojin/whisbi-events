@@ -12,7 +12,7 @@ const onePublishedEventPerUser: Handler = async (req: Request, res: Response, ne
   // Event with public/private state already exists for this user AND
   // The existing event is not the one we try to update now
   if (!isDraft(req.body) && existingEventId !== undefined && (existingEventId.toString() !== updatingEventId)) {
-    res.status(400).json({ message: 'User can have only one published event at a time' })
+    res.status(400).json({ error: 'User can have only one published event at a time' })
     return
   }
 

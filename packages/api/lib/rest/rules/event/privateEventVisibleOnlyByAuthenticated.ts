@@ -7,7 +7,7 @@ const privateEventVisibleOnlyByAuthenticated: Handler = async (req: Request, res
   const isAuthenticated = req.user !== undefined
 
   if (event.state === EventState.PRIVATE && !isAuthenticated) {
-    res.status(403).json({ message: 'Private event can be only accessed by authenticated users' })
+    res.status(403).json({ error: 'Private event can be only accessed by authenticated users' })
     return
   }
 

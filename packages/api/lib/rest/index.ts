@@ -18,6 +18,9 @@ import createSubscription from './endpoint/createSubscription'
 import currentUserCantBeEventOwner from './rules/event/currentUserCantBeEventOwner'
 import cantSubscribeTwice from './rules/event/subscription/cantSubscribeTwice'
 import maxSubscriptions from './rules/event/subscription/maxSubscriptions'
+import deleteSubscription from './endpoint/deleteSubscription'
+import existingSubscription from './rules/event/subscription/existingSubscription'
+import userIsSubscriptionOwner from './rules/event/subscription/userIsSubscriptionOwner'
 
 const validEventEntity = validEntity('Event', ['headline', 'description', 'startDate', 'location'])
 const validSubscriptionEntity = validEntity('Subscription', ['name', 'email'])
@@ -88,6 +91,15 @@ export default {
       maxSubscriptions(3),
       validSubscriptionEntity,
       createSubscription
+    )
+
+    // Delete existing subscription
+    router.delete(
+      '/subscription/:subscriptionId',
+      authenticated,
+      existingSubscription,
+      userIsSubscriptionOwner,
+      deleteSubscription
     )
 
     return app.listen(port, () => {

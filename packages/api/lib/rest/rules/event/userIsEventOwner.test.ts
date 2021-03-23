@@ -52,7 +52,7 @@ describe('current user must be event owner rule', () => {
       await userIsEventOwner(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(403)
-      expect(res.json).toHaveBeenCalledWith({ message: 'This operation is accessible only by event owner' })
+      expect(res.json).toHaveBeenCalledWith({ error: 'This operation is accessible only by event owner' })
       expect(next).not.toHaveBeenCalled()
     })
   })
@@ -66,7 +66,7 @@ describe('current user must be event owner rule', () => {
       await userIsEventOwner(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(403)
-      expect(res.json).toHaveBeenCalledWith({ message: 'This operation is accessible only by event owner' })
+      expect(res.json).toHaveBeenCalledWith({ error: 'This operation is accessible only by event owner' })
       expect(next).not.toHaveBeenCalled()
     })
   })

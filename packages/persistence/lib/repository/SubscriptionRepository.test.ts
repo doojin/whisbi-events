@@ -49,13 +49,13 @@ describe('subscription repository', () => {
     return await getRepository(Event).save(event)
   }
 
-  async function generateUserEventSubscription (event: Event, user: User): Promise<void> {
+  async function generateUserEventSubscription (event: Event, user: User): Promise<Subscription> {
     const subscription = new Subscription()
     subscription.name = 'test-name'
     subscription.email = 'test-email'
     subscription.event = event
     subscription.user = user
-    await getRepository(Subscription).save(subscription)
+    return await getRepository(Subscription).save(subscription)
   }
 
   describe('alreadySubscribed', () => {
@@ -109,6 +109,27 @@ describe('subscription repository', () => {
 
       expect(await subscriptionRepository.getUserSubscriptionCount(subscriber1.id)).toEqual(3)
       expect(await subscriptionRepository.getUserSubscriptionCount(subscriber2.id)).toEqual(1)
+    })
+  })
+
+  describe('findOneAndJoinWithUser', () => {
+    test('finds user subscription and joins it with user entity', async () => {
+      const user = await generateUser()
+      const event = await generateEvent(user)
+      const subscription = await generateUserEventSubscription(event, user)
+
+      const foundSubscription = await subscriptionRepository.findOneAndJoinWithUser(subscription.id)
+
+      expect(foundSubscription).toEqual({
+        id: 1,
+        name: 'test-name',
+        email: 'test-email',
+        user: {
+          id: 1,
+          name: 'test-name',
+          photo: 'test-photo'
+        }
+      })
     })
   })
 })

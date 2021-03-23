@@ -8,7 +8,7 @@ const draftEventVisibleOnlyByOwner: Handler = async (req: Request, res: Response
   const currentUser = req.user as User
 
   if (isDraft(event) && (currentUser === undefined || currentUser.id !== event.user.id)) {
-    res.status(403).json({ message: 'Draft event can be only accessed by event owner' })
+    res.status(403).json({ error: 'Draft event can be only accessed by event owner' })
     return
   }
 

@@ -15,4 +15,11 @@ export default class SubscriptionRepository extends Repository<Subscription> {
       .innerJoin('subscription.user', 'user', 'user.id = :userId', { userId })
       .getCount()
   }
+
+  async findOneAndJoinWithUser (id): Promise<Subscription|undefined> {
+    return await this.createQueryBuilder('subscription')
+      .where('subscription.id = :id', { id })
+      .innerJoinAndSelect('subscription.user', 'user')
+      .getOne()
+  }
 }

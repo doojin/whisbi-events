@@ -46,7 +46,7 @@ describe('private event visible only by authenticated users rule', () => {
         await privateEventVisibleOnlyByAuthenticated(req, res, next)
 
         expect(res.status).toHaveBeenCalledWith(403)
-        expect(res.json).toHaveBeenCalledWith({ message: 'Private event can be only accessed by authenticated users' })
+        expect(res.json).toHaveBeenCalledWith({ error: 'Private event can be only accessed by authenticated users' })
         expect(next).not.toHaveBeenCalled()
       })
     })

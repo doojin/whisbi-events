@@ -93,7 +93,7 @@ describe('one published event rule', () => {
           await onePublishedEventPerUser(req, res, next)
 
           expect(res.status).toHaveBeenCalledWith(400)
-          expect(res.json).toHaveBeenCalledWith({ message: 'User can have only one published event at a time' })
+          expect(res.json).toHaveBeenCalledWith({ error: 'User can have only one published event at a time' })
           expect(next).not.toHaveBeenCalled()
         })
       })
