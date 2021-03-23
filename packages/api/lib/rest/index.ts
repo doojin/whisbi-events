@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import createEvent from './endpoint/createEvent'
 import authenticate from './authentication/index'
 import authenticated from './rules/authenticated'
-import validEventEntity from './rules/event/validEventEntity'
+import validEntity from './rules/validEntity'
 import onePublishedEventPerUser from './rules/event/onePublishedEventPerUser'
 import existingEvent from './rules/event/existingEvent'
 import draftEventVisibleOnlyByOwner from './rules/event/draftEventVisibleOnlyByOwner'
@@ -18,6 +18,9 @@ import createSubscription from './endpoint/createSubscription'
 import currentUserCantBeEventOwner from './rules/event/currentUserCantBeEventOwner'
 import cantSubscribeTwice from './rules/event/subscription/cantSubscribeTwice'
 import maxSubscriptions from './rules/event/subscription/maxSubscriptions'
+
+const validEventEntity = validEntity('Event', ['headline', 'description', 'startDate', 'location'])
+const validSubscriptionEntity = validEntity('Subscription', ['name', 'email'])
 
 export default {
   start (port: number) {
@@ -83,6 +86,7 @@ export default {
       currentUserCantBeEventOwner,
       cantSubscribeTwice,
       maxSubscriptions(3),
+      validSubscriptionEntity,
       createSubscription
     )
 
