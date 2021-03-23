@@ -11,6 +11,7 @@ import Event from './entity/Event'
 import EventState from './entity/EventState'
 import UserRepository from './repository/UserRepository'
 import EventRepository from './repository/EventRepository'
+import Subscription from './entity/Subscription'
 
 export async function createConnection (
   database: string,
@@ -42,6 +43,10 @@ export function getEventRepository (): EventRepository {
 
 export function getTokenRepository (): Repository<Token> {
   return getRepository(Token)
+}
+
+export function getSubscriptionRepository (): Repository<Subscription> {
+  return getRepository(Subscription)
 }
 
 export { User, Token, Event, EventState }
