@@ -1,6 +1,5 @@
 import { Handler, NextFunction, Request, Response } from 'express'
 import asyncHandler from './asyncHandler'
-import HttpError from './HttpError'
 
 describe('asynchronous endpoint error handler', () => {
   let endpoint: Handler
@@ -30,13 +29,14 @@ describe('asynchronous endpoint error handler', () => {
 
   describe('error contains status code', () => {
     beforeEach(() => {
-      endpoint = async () => { throw new HttpError(405, 'test error') }
+      endpoint = async () => { throw new Error('test error') }
     })
 
     test('sends correct status code', async () => {
       await asyncHandler(endpoint)(req, res, next)
-      expect(res.status).toHaveBeenCalledTimes(1)
-      expect(res.status).toHaveBeenCalledWith(405)
+
+      expect(res.status).toHaveBeenCalledWith(500)
+      expect(res.json).toHaveBeenCalledWith({ error: 'test error' })
     })
   })
 

@@ -5,8 +5,7 @@ export default function asyncHandler (endpoint: Handler): Handler {
     try {
       await endpoint(req, res, next)
     } catch (e) {
-      const statusCode = e.statusCode !== undefined ? e.statusCode : 500
-      res.status(statusCode).json({ error: e.message })
+      res.status(500).json({ error: e.message })
     }
   }
 }
