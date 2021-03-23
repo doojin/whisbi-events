@@ -13,6 +13,7 @@ describe('create subscription endpoint', () => {
 
   beforeEach(() => {
     req = {
+      user: {},
       body: {
         id: 13,
         name: 'test-name',
@@ -51,7 +52,8 @@ describe('create subscription endpoint', () => {
       email: 'test-email',
       event: {
         id: 14
-      }
+      },
+      user: {}
     })
   })
 

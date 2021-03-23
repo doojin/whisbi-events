@@ -1,4 +1,5 @@
 import Event from './Event'
+import User from './User'
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm'
 
 @Entity()
@@ -14,4 +15,7 @@ export default class Subscription {
 
   @ManyToOne(() => Event)
   event!: Event
+
+  @ManyToOne(() => User)
+  user!: User
 }

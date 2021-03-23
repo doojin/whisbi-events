@@ -19,7 +19,7 @@ describe('get single event endpoint', () => {
     eventRepository.findOne.mockResolvedValue({ id: 13 })
 
     req = {
-      params: { id: '13' }
+      params: { eventId: '13' }
     } as any as Request
 
     res = {

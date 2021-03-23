@@ -5,7 +5,7 @@ import asyncHandler from '../../error/asyncHandler'
 
 const onePublishedEventPerUser: Handler = async (req: Request, res: Response, next: NextFunction) => {
   const { id: userId } = req.user as User
-  const updatingEventId: string|undefined = req.params.id
+  const updatingEventId: string|undefined = req.params.eventId
   const existingEventId = await getEventRepository().getExistingUserNonDraftEventId(userId)
 
   // The event entity we try to create/update has non-draft (public/private) state AND

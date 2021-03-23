@@ -3,7 +3,7 @@ import { Event, getEventRepository } from '@whisbi-events/persistence'
 import asyncHandler from '../error/asyncHandler'
 
 const updateEvent: Handler = async (req: Request, res: Response): Promise<void> => {
-  const id = req.params.id
+  const id = req.params.eventId
   const event: Event = req.body
 
   await getEventRepository().update(id, event)

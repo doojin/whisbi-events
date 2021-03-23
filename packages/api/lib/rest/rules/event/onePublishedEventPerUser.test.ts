@@ -20,7 +20,7 @@ describe('one published event rule', () => {
     req = {
       user: {},
       params: {
-        id: '13'
+        eventId: '13'
       }
     } as any as Request
 

@@ -14,7 +14,7 @@ describe('update event endpoint', () => {
   beforeEach(() => {
     req = {
       params: {
-        id: '13'
+        eventId: '13'
       },
       body: {
         headline: 'test-headline'

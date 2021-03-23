@@ -14,7 +14,7 @@ describe('delete existing event endpoint', () => {
   beforeEach(() => {
     req = {
       params: {
-        id: '13'
+        eventId: '13'
       }
     } as any as Request
 

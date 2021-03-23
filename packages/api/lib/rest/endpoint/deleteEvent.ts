@@ -3,7 +3,7 @@ import { getEventRepository } from '@whisbi-events/persistence'
 import asyncHandler from '../error/asyncHandler'
 
 const deleteEvent: Handler = async (req: Request, res: Response): Promise<void> => {
-  const id = req.params.id
+  const id = req.params.eventId
 
   await getEventRepository().delete(id)
 
