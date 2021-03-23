@@ -98,4 +98,36 @@ describe('user repository', () => {
       })
     })
   })
+
+  describe('findMultipleEvents', () => {
+    test('returns events considering requested offset, limit and states', async () => {
+      const user1 = await generateUser()
+      await generateUserEvent(user1, EventState.DRAFT) // 1
+      await generateUserEvent(user1, EventState.DRAFT) // 2
+      await generateUserEvent(user1, EventState.PRIVATE) // 3
+      await generateUserEvent(user1, EventState.PRIVATE) // 4
+      await generateUserEvent(user1, EventState.PUBLIC) // 5
+      await generateUserEvent(user1, EventState.PUBLIC) // 6
+
+      const user2 = await generateUser()
+      await generateUserEvent(user2, EventState.DRAFT) // 7
+      await generateUserEvent(user2, EventState.DRAFT) // 8
+      await generateUserEvent(user2, EventState.PRIVATE) // 9
+      await generateUserEvent(user2, EventState.PRIVATE) // 10
+      await generateUserEvent(user2, EventState.PUBLIC) // 11
+      await generateUserEvent(user2, EventState.PUBLIC) // 12
+
+      // query 4 events, with offset = 2, filtering by state: private & public
+      const limit = 4
+      const offset = 2
+      const states = [EventState.PRIVATE, EventState.PUBLIC]
+
+      const events = await eventRepository.findMultipleEvents(limit, offset, states)
+
+      // private and public events are: 3, 4, 5, 6, 9, 10, 11, 12
+      // after applying offset: 5, 6, 9, 10, 11, 12
+      // after applying limit: 5, 6, 9, 10
+      expect(events.map(event => event.id)).toEqual([5, 6, 9, 10])
+    })
+  })
 })

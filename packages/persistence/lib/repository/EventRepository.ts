@@ -18,4 +18,14 @@ export default class EventRepository extends Repository<Event> {
       .innerJoinAndSelect('event.user', 'user')
       .getOne()
   }
+
+  async findMultipleEvents (limit: number, offset: number, states: EventState[]): Promise<Event[]> {
+    let queryBuilder = this.createQueryBuilder('event').limit(limit).offset(offset)
+
+    if (states.length !== undefined) {
+      queryBuilder = queryBuilder.where('event.state in (:...states)', { states })
+    }
+
+    return await queryBuilder.getMany()
+  }
 }
