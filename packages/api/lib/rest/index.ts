@@ -13,6 +13,7 @@ import getSingleEvent from './endpoint/getSingleEvent'
 import userIsEventOwner from './rules/event/userIsEventOwner'
 import updateEvent from './endpoint/updateEvent'
 import deleteEvent from './endpoint/deleteEvent'
+import getMultipleEvents from './endpoint/getMultipleEvents'
 
 export default {
   start (port: number) {
@@ -61,6 +62,12 @@ export default {
       onePublishedEventPerUser,
       validEventEntity,
       updateEvent
+    )
+
+    // Get multiple events
+    router.get(
+      '/event',
+      getMultipleEvents
     )
 
     return app.listen(port, () => {
