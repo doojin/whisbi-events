@@ -21,6 +21,7 @@ import maxSubscriptions from './rules/event/subscription/maxSubscriptions'
 import deleteSubscription from './endpoint/deleteSubscription'
 import existingSubscription from './rules/event/subscription/existingSubscription'
 import userIsSubscriptionOwner from './rules/event/subscription/userIsSubscriptionOwner'
+import limitRequestsPerMinute from './rules/limitRequestsPerMinute'
 
 const validEventEntity = validEntity('Event', ['headline', 'description', 'startDate', 'location'])
 const validSubscriptionEntity = validEntity('Subscription', ['name', 'email'])
@@ -33,6 +34,9 @@ export default {
     app.use(bodyParser.json())
     app.use(passport.initialize())
     app.use(authenticate())
+
+    // Rate limiter to protect form Denial of Service attacks.
+    app.use(limitRequestsPerMinute({ perIpAddress: 250, perUserToken: 100 }))
 
     app.use('/api/v1', router)
 
