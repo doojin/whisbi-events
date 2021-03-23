@@ -9,4 +9,10 @@ export default class SubscriptionRepository extends Repository<Subscription> {
       .innerJoin('subscription.event', 'event', 'event.id = :eventId', { eventId })
       .getOne() !== undefined
   }
+
+  async getUserSubscriptionCount (userId): Promise<number> {
+    return await this.createQueryBuilder('subscription')
+      .innerJoin('subscription.user', 'user', 'user.id = :userId', { userId })
+      .getCount()
+  }
 }

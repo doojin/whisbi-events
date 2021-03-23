@@ -86,4 +86,29 @@ describe('subscription repository', () => {
       })
     })
   })
+
+  describe('getUserSubscriptionCount', () => {
+    test('returns amount of user subscriptions', async () => {
+      const user1 = await generateUser()
+      const user1Event1 = await generateEvent(user1)
+      const user1Event2 = await generateEvent(user1)
+
+      const user2 = await generateUser()
+      const user2Event1 = await generateEvent(user2)
+      const user2Event2 = await generateEvent(user2)
+
+      // subscriber1 has 3 subscriptions
+      const subscriber1 = await generateUser()
+      await generateUserEventSubscription(user1Event1, subscriber1)
+      await generateUserEventSubscription(user1Event2, subscriber1)
+      await generateUserEventSubscription(user2Event1, subscriber1)
+
+      // subscriber2 has 1 subscription
+      const subscriber2 = await generateUser()
+      await generateUserEventSubscription(user2Event2, subscriber2)
+
+      expect(await subscriptionRepository.getUserSubscriptionCount(subscriber1.id)).toEqual(3)
+      expect(await subscriptionRepository.getUserSubscriptionCount(subscriber2.id)).toEqual(1)
+    })
+  })
 })
