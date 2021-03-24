@@ -25,9 +25,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 15
-          registry-url: https://npm.pkg.github.com
-          always-auth: true
-          scope: '@octopatas'
       - name: Install dependencies
         run: npm ci
       - name: Run lint
