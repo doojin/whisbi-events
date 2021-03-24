@@ -8,6 +8,7 @@
   },
   "main": "dist/index.js",
   "dependencies": {
+    "mysql": "^2.18.1",
     "typeorm": "^0.2.31"
   }
 }
