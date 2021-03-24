@@ -26,7 +26,7 @@ export default class IntegrationTest {
   private subscriptionsCounter = 0
 
   async setUp (): Promise<void> {
-    this.connection = await createConnection('test', 'test', 'test', true, true, [
+    this.connection = await createConnection('whisbi_test', 'test', 'test', true, true, [
       User,
       Token,
       Subscription,
