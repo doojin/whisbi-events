@@ -3,7 +3,8 @@ import {
   createConnection as createDatabaseConnection,
   getCustomRepository,
   getRepository,
-  Repository
+  Repository,
+  Connection
 } from 'typeorm'
 import User from './entity/User'
 import Token from './entity/Token'
@@ -19,16 +20,17 @@ export async function createConnection (
   username: string,
   password: string,
   synchronize: boolean = false,
-  dropSchema: boolean = false
-): Promise<void> {
-  await createDatabaseConnection({
+  dropSchema: boolean = false,
+  entities: any[] = [
+    path.join(__dirname, '../dist/entity/*.js')
+  ]
+): Promise<Connection> {
+  return await createDatabaseConnection({
     type: 'mysql',
     database,
     username,
     password,
-    entities: [
-      path.join(__dirname, '../dist/entity/*.js')
-    ],
+    entities,
     synchronize,
     dropSchema
   })

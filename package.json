@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "compile": "lerna run build",
-    "test": "jest --runInBand",
+    "test": "jest --runInBand --silent",
     "lint": "lerna run lint"
   },
   "devDependencies": {
