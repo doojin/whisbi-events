@@ -21,11 +21,12 @@ jobs:
       - name: Shutdown existing Ubuntu MySQL instance
         run: sudo service mysql stop
       - name: Set up MySQL
-        uses: mirromutth/mysql-action@v1.1
+        uses: haltuf/mysql-action@v1.1
         with:
           mysql database: whisbi_test
           mysql user: test
           mysql password: test
+          authentication plugin: 'mysql_old_password'
       - name: Install dependencies
         run: npm ci
       - name: Bootstrap project
