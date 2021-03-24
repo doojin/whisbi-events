@@ -4,7 +4,8 @@
   "scripts": {
     "compile": "lerna run build",
     "test": "jest --runInBand --silent",
-    "lint": "lerna run lint"
+    "lint": "lerna run lint",
+    "bootstrap": "lerna run bootstrap"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
