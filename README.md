@@ -1,3 +1,5 @@
+[![Project Build](https://github.com/doojin/whisbi-events/actions/workflows/test-lint.yml/badge.svg)](https://github.com/doojin/whisbi-events/actions/workflows/test-lint.yml)
+
 # About the project
 
 So this project basically is a monorepo **(Lerna)** written in Typescript using 
@@ -76,6 +78,29 @@ Implementation: `packages/api/lib/rest/rules/limitRequestsPerMinute.ts`
 Again, instead of using in-memory collections, real production apps should store this data in stores like Redis to
 share it between multiple HTTP server instances.
 
+P.S. 
+
+This middleware is configurable with two limit values: `requests per minute per user` and 
+`requests per minute per IP address`. Currently, API uses limit of `250` requests per minute per IP address and 
+`100` requests per minute per user token.
+
+I'd like to to clarify my technical decision.
+
+First, besides limit `per user`, I decided to use limit `per IP address` in order to protect public endpoints
+(like list of events) from Denial of Service attacks.
+
+Second, about the values. As you can see, the value `per IP address` differs from value `per user token`. Basically, 
+this is because two requests from the same IP address are not necessary requests from the same user.
+
+For example, two different users may share same Wi-Fi network which will result our server to receive requests 
+from the same IP address.
+
+In some cases, the whole building/house/office using one network may share the same IP.
+
+In some very rare cases even the whole neighbourhood or small town itself may share the same IP address :)
+
+That is why we almost always want the `per IP address` limit to be bigger than `per user`.
+
 ## Custom rules
 
 Don't have much to say about them. Located here: `packages/api/lib/rest/rules`. 
@@ -101,14 +126,25 @@ The endpoints themselves are stored here: `packages/api/lib/rest/endpoint`
 For testing, I use `Jest` library.
 
 Beside unit tests, every API endpoint contains a set of integration tests.
+Each integration test will launch the whole REST API service, set up real database (MySQL) connection and perform 
+HTTP requests to the endpoints using `supertest` library.
 
-You're welcome to check it out: `packages/api/lib/rest/test`. These unit tests cover every rule defined in 
+You're welcome to check it out: `packages/api/lib/rest/test`. These integration tests cover every rule defined in 
 project task + some additional rules added by myself.
 
 I'd like to bring your attention to the implemented integration test mini-framework: 
 `packages/api/lib/rest/test/integration.ts`. If you open any integration tests, you'll notice how 
 short, readable and understandable they are and how easy it is to add new integration test use cases using 
 this small set of helper methods.
+
+I also set up the Github workflow. 
+Push to the `main` branch or PR creation triggers the project build.
+Build will:
+- Fetch the project code and install its dependencies
+- Compile the project (translate Typescript code to Javascript)
+- Run the Linter 
+- Run unit tests
+- Set up real MySQL database and run the integration tests on it
 
 ## Result
 
