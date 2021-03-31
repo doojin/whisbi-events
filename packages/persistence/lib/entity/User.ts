@@ -18,4 +18,7 @@ export default class User {
 
   @OneToMany(() => Event, event => event.user)
   events!: Event[]
+
+  @Column({ nullable: true })
+  googleId?: string
 }

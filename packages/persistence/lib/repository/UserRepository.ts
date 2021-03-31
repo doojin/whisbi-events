@@ -13,4 +13,11 @@ export default class UserRepository extends Repository<User> {
       .cache(120_000)
       .getOne()
   }
+
+  async findByGoogleId (googleId: string): Promise<User|undefined> {
+    return await this.createQueryBuilder('user')
+      .where('user.googleId = :googleId', { googleId })
+      .leftJoinAndSelect('user.token', 'token')
+      .getOne()
+  }
 }

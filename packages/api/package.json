@@ -11,10 +11,12 @@
     "@whisbi-events/persistence": "^1.0.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "googleapis": "^68.0.0",
     "passport": "^0.4.1",
     "passport-accesstoken": "^0.1.0",
     "passport-anonymous": "^1.0.1",
-    "typeorm": "^0.2.31"
+    "typeorm": "^0.2.31",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",

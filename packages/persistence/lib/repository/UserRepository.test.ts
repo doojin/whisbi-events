@@ -66,4 +66,25 @@ describe('user repository', () => {
       })
     })
   })
+
+  describe('findUserByGoogleId', () => {
+    test('returns user by it\'s google id', async () => {
+      const user1 = new User()
+      user1.name = 'user1'
+      user1.photo = 'photo'
+      user1.googleId = 'google-id-1'
+      await userRepository.save(user1)
+
+      const user2 = new User()
+      user2.name = 'user2'
+      user2.photo = 'photo'
+      user2.googleId = 'google-id-2'
+      await userRepository.save(user2)
+
+      const user = await userRepository.findByGoogleId('google-id-2')
+
+      expect(user).not.toBeUndefined()
+      expect((user as User).name).toEqual('user2')
+    })
+  })
 })

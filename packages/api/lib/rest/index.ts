@@ -22,6 +22,8 @@ import deleteSubscription from './endpoint/deleteSubscription'
 import existingSubscription from './rules/event/subscription/existingSubscription'
 import userIsSubscriptionOwner from './rules/event/subscription/userIsSubscriptionOwner'
 import limitRequestsPerMinute from './rules/limitRequestsPerMinute'
+import googleAuthentication from './endpoint/googleAuthentication'
+import googleAccessTokenRequired from './rules/authentication/googleAccessTokenRequired'
 
 const validEventEntity = validEntity('Event', ['headline', 'description', 'startDate', 'location'])
 const validSubscriptionEntity = validEntity('Subscription', ['name', 'email'])
@@ -104,6 +106,13 @@ export default {
       existingSubscription,
       userIsSubscriptionOwner,
       deleteSubscription
+    )
+
+    // Getting user token by Google account ID
+    router.post(
+      '/authentication/google',
+      googleAccessTokenRequired,
+      googleAuthentication
     )
 
     return app.listen(port, () => {
