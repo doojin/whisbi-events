@@ -1,9 +1,16 @@
 import React from 'react'
+import { Navbar, Container } from 'react-bootstrap'
+import Logo from './Logo'
+import LoginButton from './LoginButton'
+import './Header.css'
 
 export default function Header () {
   return (
-    <header>
-      Test header
-    </header>
+    <Navbar className="Header">
+      <Container>
+        <Logo/>
+        <LoginButton/>
+      </Container>
+    </Navbar>
   )
 }
