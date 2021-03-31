@@ -1,7 +1,13 @@
-function App() {
+import React from 'react'
+import { Container } from 'react-bootstrap'
+import Header from './Header'
+
+function App () {
   return (
-    <div>Hello, world!</div>
+    <Container>
+      <Header/>
+    </Container>
   )
 }
 
-export default App;
+export default App
