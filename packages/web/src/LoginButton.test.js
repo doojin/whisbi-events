@@ -9,6 +9,6 @@ describe('Login button', () => {
 
   test('contains login button element', () => {
     expect(screen.getByRole('button')).toBeInTheDocument()
-    expect(screen.getByRole('button')).toHaveTextContent('Log In')
+    expect(screen.getByRole('button')).toHaveTextContent('Sign in with Google')
   })
 })

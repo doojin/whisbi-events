@@ -1,8 +1,13 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import { GoogleLogin } from 'react-google-login'
 
 export default function LoginButton () {
+  const onSuccess = response => {
+    console.log(response.accessToken)
+  }
+
   return (
-    <Button className="float-right">Log In</Button>
+    <GoogleLogin clientId="166448680162-nflkph4e527pql7evjjqilhm4snhffmc.apps.googleusercontent.com"
+                 onSuccess={onSuccess} />
   )
 }
