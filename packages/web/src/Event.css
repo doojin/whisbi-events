@@ -1,0 +1,13 @@
+.Event {
+    width: 33%;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.Event h1 {
+    font-size: 1.5rem;
+}
+
+.Event .Description {
+    font-style: italic;
+}

@@ -20,5 +20,11 @@ export default {
     })
 
     return getResponseData(response)
+  },
+
+  async getEvents (token) {
+    const headers = token ? { token } : {}
+    const response = await fetch(`${apiAddress}/event`, { headers })
+    return getResponseData(response)
   }
 }

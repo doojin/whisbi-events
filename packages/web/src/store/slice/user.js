@@ -4,6 +4,8 @@ export const getUser = state => state.user.value
 
 export const isAuthenticated = state => state.user.value !== null
 
+export const getUserToken = state => state.user.value !== null ? state.user.value.token : null
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: {
