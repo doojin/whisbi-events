@@ -1,5 +1,14 @@
 import restService from './rest'
-import { createConnection, getUserRepository, getTokenRepository, Token, User } from '@whisbi-events/persistence'
+import {
+  createConnection,
+  getUserRepository,
+  getTokenRepository,
+  Token,
+  User,
+  Event,
+  EventState, getEventRepository
+} from '@whisbi-events/persistence'
+import { loremIpsum } from 'lorem-ipsum'
 
 const DROP_SCHEMA_ON_START = true
 const SYNC_SCHEMA_ON_START = true;
@@ -16,7 +25,7 @@ const SYNC_SCHEMA_ON_START = true;
     const user = new User()
     user.name = `user${i + 1}`
     user.events = []
-    user.photo = 'test-photo'
+    user.photo = 'https://i.pravatar.cc/300'
 
     await getUserRepository().save(user)
 
@@ -25,6 +34,19 @@ const SYNC_SCHEMA_ON_START = true;
     token.user = user
 
     await getTokenRepository().save(token)
+
+    // 4 fake public events
+    if ([6, 7, 8, 9].includes(i)) {
+      const event = new Event()
+      event.location = loremIpsum({ count: 2, units: 'words', random: Math.random })
+      event.startDate = new Date()
+      event.headline = loremIpsum({ count: 4, units: 'words', random: Math.random })
+      event.description = loremIpsum({ count: 15, units: 'words', random: Math.random })
+      event.state = EventState.PUBLIC
+      event.user = user
+
+      await getEventRepository().save(event)
+    }
   }
 
   restService.start(8000)

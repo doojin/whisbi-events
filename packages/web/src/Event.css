@@ -6,9 +6,11 @@
 }
 
 .Event h1 {
+    text-transform: capitalize;
     font-size: 1.5rem;
 }
 
 .Event .Description {
+    text-transform: capitalize;
     font-style: italic;
 }
