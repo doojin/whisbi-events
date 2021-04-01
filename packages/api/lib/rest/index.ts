@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import passport from 'passport'
 import bodyParser from 'body-parser'
 import createEvent from './endpoint/createEvent'
@@ -36,6 +37,7 @@ export default {
     app.use(bodyParser.json())
     app.use(passport.initialize())
     app.use(authenticate())
+    app.use(cors())
 
     // Rate limiter to protect form Denial of Service attacks.
     app.use(limitRequestsPerMinute({ perIpAddress: 250, perUserToken: 100 }))
