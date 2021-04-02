@@ -133,4 +133,53 @@ describe('subscription repository', () => {
       })
     })
   })
+
+  describe('getUserSubscriptions', () => {
+    test('finds all user subscriptions', async () => {
+      const eventOwner = await generateUser()
+      const event1 = await generateEvent(eventOwner)
+      const event2 = await generateEvent(eventOwner)
+      const event3 = await generateEvent(eventOwner)
+      const event4 = await generateEvent(eventOwner)
+
+      const subscriber1 = await generateUser()
+      await generateUserEventSubscription(event1, subscriber1)
+      await generateUserEventSubscription(event2, subscriber1)
+
+      const subscriber2 = await generateUser()
+      await generateUserEventSubscription(event3, subscriber2)
+      await generateUserEventSubscription(event4, subscriber2)
+
+      const subscribtions = await subscriptionRepository.getUserSubscriptions(subscriber2.id)
+
+      expect(subscribtions).toEqual([
+        {
+          id: 3,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 3,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          }
+        },
+        {
+          id: 4,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 4,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          }
+        }
+      ])
+    })
+  })
 })

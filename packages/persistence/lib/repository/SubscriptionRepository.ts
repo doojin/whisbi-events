@@ -22,4 +22,11 @@ export default class SubscriptionRepository extends Repository<Subscription> {
       .innerJoinAndSelect('subscription.user', 'user')
       .getOne()
   }
+
+  async getUserSubscriptions (userId): Promise<Subscription[]> {
+    return await this.createQueryBuilder('subscription')
+      .innerJoin('subscription.user', 'user', 'user.id = :userId', { userId })
+      .innerJoinAndSelect('subscription.event', 'event')
+      .getMany()
+  }
 }
