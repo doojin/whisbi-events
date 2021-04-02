@@ -8,6 +8,7 @@ import { Container } from 'react-bootstrap'
 import './App.css'
 import NewEventForm from './NewEventForm'
 import EventDetails from './EventDetails'
+import ReactNotification from 'react-notifications-component'
 
 function App () {
   const dispatch = useDispatch()
@@ -19,8 +20,9 @@ function App () {
 
   return (
     <div className="App">
-      <Header/>
       <BrowserRouter>
+        <ReactNotification/>
+        <Header/>
         <Container className="MainContainer">
           <Switch>
             <Route exact path="/">

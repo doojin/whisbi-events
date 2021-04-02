@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom'
 import { getUserToken } from './store/slice/user'
 import { useSelector } from 'react-redux'
 import BackToEventsButton from './BackToEventsButton'
+import notifications from './notifications'
 
 export default function NewEventForm () {
   const [headline, setHeadline] = useState('')
@@ -29,6 +30,8 @@ export default function NewEventForm () {
     }, userToken)
 
     history.push('/')
+
+    notifications.success('Your event was created!')
   }
 
   return (

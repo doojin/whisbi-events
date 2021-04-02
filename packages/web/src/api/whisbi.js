@@ -1,10 +1,19 @@
+import notifications from '../notifications'
+
 const apiAddress = 'http://localhost:8000/api/v1'
 
 async function getResponseData (response) {
   const data = await response.json()
 
-  if (data.error) throw new Error(data.error)
-  if (!response.ok) throw new Error(response.statusText)
+  if (data.error) {
+    notifications.error(data.error)
+    throw new Error(data.error)
+  }
+
+  if (!response.ok) {
+    notifications.error(response.statusText)
+    throw new Error(response.statusText)
+  }
 
   return data
 }
