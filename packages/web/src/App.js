@@ -6,7 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Events from './Events'
 import { Container } from 'react-bootstrap'
 import './App.css'
-import NewEventForm from './NewEventForm'
+import UpsertEventForm from './UpsertEventForm'
 import EventDetails from './EventDetails'
 import ReactNotification from 'react-notifications-component'
 import MyEvents from './MyEvents'
@@ -30,7 +30,7 @@ function App () {
               <Events/>
             </Route>
             <Route exact path="/event/new">
-              <NewEventForm/>
+              <UpsertEventForm/>
             </Route>
             <Route exact path="/event/my">
               <MyEvents/>

@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import BackToEventsButton from './BackToEventsButton'
 import notifications from './notifications'
 
-export default function NewEventForm () {
+export default function UpsertEventForm () {
   const [headline, setHeadline] = useState('')
   const [description, setDescription] = useState('')
   const [startDate, setStartDate] = useState(new Date().toISOString())
