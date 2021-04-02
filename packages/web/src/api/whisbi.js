@@ -56,5 +56,20 @@ export default {
     const headers = { token }
     const response = await fetch(`${apiAddress}/event/${id}`, { headers })
     return getResponseData(response)
+  },
+
+  async subscribe (eventId, subscription, token) {
+    const headers = {
+      'Content-Type': 'application/json',
+      token
+    }
+
+    const response = await fetch(`${apiAddress}/event/${eventId}/subscription`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(subscription)
+    })
+
+    return getResponseData(response)
   }
 }

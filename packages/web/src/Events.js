@@ -32,7 +32,7 @@ export default function Events () {
   return (
     <>
       { createEventButton }
-      <CardColumns className="EventGrid">
+      <CardColumns>
         { eventCards }
       </CardColumns>
     </>

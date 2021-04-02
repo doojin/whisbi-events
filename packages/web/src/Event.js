@@ -11,9 +11,17 @@ export default function Event ({ event }) {
 
   return (
     <Card className="Event" onClick={() => history.push(`event/${event.id}`)}>
-      <h1><StateIcon state={ event.state }/> { event.headline }</h1>
-      <p className="Description">{ event.description }</p>
-      <div><EventDate date={ event.startDate }/> - { event.location }</div>
+      <Card.Body>
+        <Card.Title>
+          <StateIcon state={ event.state }/> { event.headline }
+        </Card.Title>
+        <Card.Text>
+          <p className="Description">{ event.description }</p>
+        </Card.Text>
+      </Card.Body>
+      <Card.Footer>
+        <EventDate date={ event.startDate }/> - { event.location }
+      </Card.Footer>
     </Card>
   )
 }
