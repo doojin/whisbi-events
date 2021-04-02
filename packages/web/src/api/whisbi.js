@@ -41,5 +41,11 @@ export default {
     })
 
     return getResponseData(response)
+  },
+
+  async getEvent (id, token) {
+    const headers = { token }
+    const response = await fetch(`${apiAddress}/event/${id}`, { headers })
+    return getResponseData(response)
   }
 }

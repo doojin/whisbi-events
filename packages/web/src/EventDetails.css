@@ -1,0 +1,9 @@
+.EventDetails > h1:first-letter,
+.EventDetails > p:first-letter,
+.EventDetails .value {
+    text-transform: capitalize;
+}
+
+.EventDetails .value {
+    font-weight: bold;
+}

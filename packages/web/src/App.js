@@ -7,6 +7,7 @@ import Events from './Events'
 import { Container } from 'react-bootstrap'
 import './App.css'
 import NewEventForm from './NewEventForm'
+import EventDetails from './EventDetails'
 
 function App () {
   const dispatch = useDispatch()
@@ -27,6 +28,9 @@ function App () {
             </Route>
             <Route exact path="/event/new">
               <NewEventForm/>
+            </Route>
+            <Route exact path="/event/:id">
+              <EventDetails/>
             </Route>
           </Switch>
         </Container>

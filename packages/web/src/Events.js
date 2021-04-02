@@ -4,11 +4,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setEvents, getEvents } from './store/slice/events'
 import Event from './Event'
 import { Button, CardColumns } from 'react-bootstrap'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 export default function Events () {
   const dispatch = useDispatch()
   const events = useSelector(getEvents)
+  const history = useHistory()
 
   useEffect(() => {
     (async () => {
@@ -17,17 +18,18 @@ export default function Events () {
     })()
   }, [])
 
-  const CreateEventButton = withRouter(({ history }) => (
-      <Button onClick={() => history.push('/event/new')}>
-        + Create Event
-      </Button>
-  ))
+  const createEventButton = (
+    <Button onClick={() => history.push('/event/new')}>
+      + Create Event
+    </Button>
+  )
 
-  const eventCards = events.map(event => <Event key={ event.id } event={ event }/>)
+  const eventCards = events.map(event =>
+    <Event key={ event.id } event={ event }/>)
 
   return (
     <>
-      <CreateEventButton/>
+      { createEventButton }
       <CardColumns>
         { eventCards }
       </CardColumns>
