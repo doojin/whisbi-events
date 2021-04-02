@@ -9,6 +9,7 @@ import './App.css'
 import NewEventForm from './NewEventForm'
 import EventDetails from './EventDetails'
 import ReactNotification from 'react-notifications-component'
+import MyEvents from './MyEvents'
 
 function App () {
   const dispatch = useDispatch()
@@ -30,6 +31,9 @@ function App () {
             </Route>
             <Route exact path="/event/new">
               <NewEventForm/>
+            </Route>
+            <Route exact path="/event/my">
+              <MyEvents/>
             </Route>
             <Route exact path="/event/:id">
               <EventDetails/>

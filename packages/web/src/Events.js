@@ -26,12 +26,18 @@ export default function Events () {
     </Button>
   )
 
+  const myEventsButton = (
+    <Button onClick={() => history.push('/event/my')}>
+      My Events
+    </Button>
+  )
+
   const eventCards = events.map(event =>
     <Event key={ event.id } event={ event }/>)
 
   return (
     <>
-      { createEventButton }
+      { createEventButton } { myEventsButton }
       <CardColumns>
         { eventCards }
       </CardColumns>

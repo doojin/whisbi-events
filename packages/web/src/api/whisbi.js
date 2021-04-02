@@ -71,5 +71,11 @@ export default {
     })
 
     return getResponseData(response)
+  },
+
+  async getUserEvents (token) {
+    const headers = { token }
+    const response = await fetch(`${apiAddress}/user/event`, { headers })
+    return getResponseData(response)
   }
 }
