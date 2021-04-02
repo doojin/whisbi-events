@@ -127,7 +127,8 @@ describe('subscription repository', () => {
         user: {
           id: 1,
           name: 'test-name',
-          photo: 'test-photo'
+          photo: 'test-photo',
+          googleId: null
         }
       })
     })

@@ -31,7 +31,7 @@ export default class EventRepository extends Repository<Event> {
 
   async findUserEvents (userId): Promise<Event[]> {
     return this.createQueryBuilder('event')
-      .innerJoinAndSelect('event.user', 'user', 'user.id = :userId', { userId })
+      .innerJoin('event.user', 'user', 'user.id = :userId', { userId })
       .getMany()
   }
 }
