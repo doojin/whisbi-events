@@ -26,6 +26,7 @@ import limitRequestsPerMinute from './rules/limitRequestsPerMinute'
 import googleAuthentication from './endpoint/googleAuthentication'
 import googleAccessTokenRequired from './rules/authentication/googleAccessTokenRequired'
 import getUserEvents from './endpoint/getUserEvents'
+import getUserSubscriptions from './endpoint/getUserSubscriptions'
 
 const validEventEntity = validEntity('Event', ['headline', 'description', 'startDate', 'location'])
 const validSubscriptionEntity = validEntity('Subscription', ['name', 'email'])
@@ -123,6 +124,13 @@ export default {
       '/user/event',
       authenticated,
       getUserEvents
+    )
+
+    // Getting current user subscriptions
+    router.get(
+      '/user/subscription',
+      authenticated,
+      getUserSubscriptions
     )
 
     return app.listen(port, () => {
