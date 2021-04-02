@@ -3,16 +3,22 @@ import notifications from '../notifications'
 const apiAddress = 'http://localhost:8000/api/v1'
 
 async function getResponseData (response) {
-  const data = await response.json()
+  if (!response.ok) {
+    notifications.error(response.statusText)
+    throw new Error(response.statusText)
+  }
+
+  let data
+
+  try {
+    data = await response.json()
+  } catch (e) {
+    return null
+  }
 
   if (data.error) {
     notifications.error(data.error)
     throw new Error(data.error)
-  }
-
-  if (!response.ok) {
-    notifications.error(response.statusText)
-    throw new Error(response.statusText)
   }
 
   return data
@@ -76,6 +82,15 @@ export default {
   async getUserEvents (token) {
     const headers = { token }
     const response = await fetch(`${apiAddress}/user/event`, { headers })
+    return getResponseData(response)
+  },
+
+  async deleteEvent (eventId, token) {
+    const headers = { token }
+    const response = await fetch(`${apiAddress}/event/${eventId}`, {
+      method: 'DELETE',
+      headers
+    })
     return getResponseData(response)
   }
 }

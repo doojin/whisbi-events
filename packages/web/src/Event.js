@@ -15,8 +15,8 @@ export default function Event ({ event }) {
         <Card.Title>
           <StateIcon state={ event.state }/> { event.headline }
         </Card.Title>
-        <Card.Text>
-          <p className="Description">{ event.description }</p>
+        <Card.Text className="Description">
+          { event.description }
         </Card.Text>
       </Card.Body>
       <Card.Footer>

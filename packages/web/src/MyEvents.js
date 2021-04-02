@@ -5,10 +5,13 @@ import { getUserToken } from './store/slice/user'
 import { Button, Table } from 'react-bootstrap'
 import EventDate from './EventDate'
 import BackToEventsButton from './BackToEventsButton'
+import { useHistory } from 'react-router-dom'
+import notifications from './notifications'
 
 export default function MyEvents () {
   const [events, setEvents] = useState([])
   const token = useSelector(getUserToken)
+  const history = useHistory()
 
   useEffect(() => {
     (async () => {
@@ -17,6 +20,16 @@ export default function MyEvents () {
     })()
   }, [token])
 
+  const deleteButton = eventId => (
+    <Button onClick={async () => {
+      await whisbiApi.deleteEvent(eventId, token)
+      history.go(0)
+      notifications.success('Your event was deleted')
+    }}>
+      Delete
+    </Button>
+  )
+
   const rows = events.map(event => (
     <tr key={ event.id }>
       <td># { event.id }</td>
@@ -24,8 +37,7 @@ export default function MyEvents () {
       <td>{ event.state }</td>
       <td><EventDate date={ event.startDate }/></td>
       <td className="text-center">
-        <Button>Edit</Button>
-        {' '}<Button>Delete</Button>
+        <Button>Edit</Button> { deleteButton(event.id) }
       </td>
     </tr>
   ))
