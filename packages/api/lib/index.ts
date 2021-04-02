@@ -42,7 +42,7 @@ const SYNC_SCHEMA_ON_START = true;
       event.startDate = new Date()
       event.headline = loremIpsum({ count: 4, units: 'words', random: Math.random })
       event.description = loremIpsum({ count: 15, units: 'words', random: Math.random })
-      event.state = EventState.PUBLIC
+      event.state = i === 9 ? EventState.PRIVATE : EventState.PUBLIC
       event.user = user
 
       await getEventRepository().save(event)

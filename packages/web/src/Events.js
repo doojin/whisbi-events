@@ -5,18 +5,20 @@ import { setEvents, getEvents } from './store/slice/events'
 import Event from './Event'
 import { Button, CardColumns } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
+import { getUserToken } from './store/slice/user'
 
 export default function Events () {
   const dispatch = useDispatch()
   const events = useSelector(getEvents)
+  const token = useSelector(getUserToken)
   const history = useHistory()
 
   useEffect(() => {
     (async () => {
-      const events = await whisbiApi.getEvents()
+      const events = await whisbiApi.getEvents(token)
       dispatch(setEvents(events))
     })()
-  }, [])
+  }, [token])
 
   const createEventButton = (
     <Button onClick={() => history.push('/event/new')}>
@@ -30,7 +32,7 @@ export default function Events () {
   return (
     <>
       { createEventButton }
-      <CardColumns>
+      <CardColumns className="EventGrid">
         { eventCards }
       </CardColumns>
     </>

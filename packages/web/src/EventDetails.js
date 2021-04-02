@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom'
 import BackToEventsButton from './BackToEventsButton'
 import './EventDetails.css'
+import StateIcon from './StateIcon'
 
 export default function EventDetails () {
   const { id: eventId } = useParams()
@@ -27,7 +28,7 @@ export default function EventDetails () {
       <p>{ event.description }</p>
       <p>Start date: <span className="value">{ event.startDate }</span></p>
       <p>Location: <span className="value">{ event.location }</span></p>
-      <p>Event state: <span className="value">{ event.state }</span></p>
+      <p>Event state: <StateIcon state={event.state}/> <span className="value">{ event.state }</span></p>
     </div>
       )
     : null
