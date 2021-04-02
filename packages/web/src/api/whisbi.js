@@ -100,9 +100,24 @@ export default {
     return getResponseData(response)
   },
 
+  async getUserSubscriptions (token) {
+    const headers = { token }
+    const response = await fetch(`${apiAddress}/user/subscription`, { headers })
+    return getResponseData(response)
+  },
+
   async deleteEvent (eventId, token) {
     const headers = { token }
     const response = await fetch(`${apiAddress}/event/${eventId}`, {
+      method: 'DELETE',
+      headers
+    })
+    return getResponseData(response)
+  },
+
+  async deleteSubscription (subscriptionId, token) {
+    const headers = { token }
+    const response = await fetch(`${apiAddress}/subscription/${subscriptionId}`, {
       method: 'DELETE',
       headers
     })

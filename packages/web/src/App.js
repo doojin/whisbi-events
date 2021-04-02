@@ -10,6 +10,7 @@ import UpsertEventForm from './UpsertEventForm'
 import EventDetails from './EventDetails'
 import ReactNotification from 'react-notifications-component'
 import MyEvents from './MyEvents'
+import MySubscriptions from './MySubscriptions'
 
 function App () {
   const dispatch = useDispatch()
@@ -40,6 +41,9 @@ function App () {
             </Route>
             <Route exact path="/event/:id">
               <EventDetails/>
+            </Route>
+            <Route exact path="/subscription/my">
+              <MySubscriptions/>
             </Route>
           </Switch>
         </Container>

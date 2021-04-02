@@ -5,13 +5,14 @@ import { setEvents, getEvents } from './store/slice/events'
 import Event from './Event'
 import { Button, CardColumns } from 'react-bootstrap'
 import { useHistory } from 'react-router-dom'
-import { getUserToken } from './store/slice/user'
+import { getUserToken, isAuthenticated } from './store/slice/user'
 
 export default function Events () {
   const dispatch = useDispatch()
   const events = useSelector(getEvents)
   const token = useSelector(getUserToken)
   const history = useHistory()
+  const authenticated = useSelector(isAuthenticated)
 
   useEffect(() => {
     (async () => {
@@ -32,12 +33,22 @@ export default function Events () {
     </Button>
   )
 
+  const mySubscriptionsButton = (
+    <Button onClick={() => history.push('/subscription/my')}>
+      My Subscriptions
+    </Button>
+  )
+
+  const buttons = authenticated
+    ? <div>{ createEventButton } { myEventsButton } { mySubscriptionsButton }</div>
+    : null
+
   const eventCards = events.map(event =>
     <Event key={ event.id } event={ event }/>)
 
   return (
     <>
-      { createEventButton } { myEventsButton }
+      { buttons }
       <CardColumns>
         { eventCards }
       </CardColumns>
