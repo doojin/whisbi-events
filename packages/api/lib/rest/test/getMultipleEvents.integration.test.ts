@@ -27,18 +27,18 @@ describe('get multiple events integration test', () => {
       .get('/api/v1/event?offset=1&limit=2')
       .expect(200)
       .expect([{
-        id: 2,
-        headline: 'event2-headline',
-        description: 'event2-description',
-        startDate: '1991-03-21T00:00:00.000Z',
-        location: 'event2-location',
-        state: 'public'
-      }, {
         id: 3,
         headline: 'event3-headline',
         description: 'event3-description',
         startDate: '1991-03-21T00:00:00.000Z',
         location: 'event3-location',
+        state: 'public'
+      }, {
+        id: 2,
+        headline: 'event2-headline',
+        description: 'event2-description',
+        startDate: '1991-03-21T00:00:00.000Z',
+        location: 'event2-location',
         state: 'public'
       }])
   })
@@ -83,19 +83,19 @@ describe('get multiple events integration test', () => {
       .set('token', user4.token.value)
       .expect(200)
       .expect([{
-        id: 2,
-        headline: 'event2-headline',
-        description: 'event2-description',
-        startDate: '1991-03-21T00:00:00.000Z',
-        location: 'event2-location',
-        state: 'public'
-      }, {
         id: 3,
         headline: 'event3-headline',
         description: 'event3-description',
         startDate: '1991-03-21T00:00:00.000Z',
         location: 'event3-location',
         state: 'private'
+      }, {
+        id: 2,
+        headline: 'event2-headline',
+        description: 'event2-description',
+        startDate: '1991-03-21T00:00:00.000Z',
+        location: 'event2-location',
+        state: 'public'
       }])
   })
 })

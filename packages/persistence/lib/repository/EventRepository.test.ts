@@ -128,7 +128,7 @@ describe('user repository', () => {
       // private and public events are: 3, 4, 5, 6, 9, 10, 11, 12
       // after applying offset: 5, 6, 9, 10, 11, 12
       // after applying limit: 5, 6, 9, 10
-      expect(events.map(event => event.id)).toEqual([5, 6, 9, 10])
+      expect(events.map(event => event.id)).toEqual([10, 9, 6, 5])
     })
   })
 
