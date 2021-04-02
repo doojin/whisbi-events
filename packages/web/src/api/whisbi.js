@@ -3,22 +3,22 @@ import notifications from '../notifications'
 const apiAddress = 'http://localhost:8000/api/v1'
 
 async function getResponseData (response) {
-  if (!response.ok) {
-    notifications.error(response.statusText)
-    throw new Error(response.statusText)
-  }
-
   let data
 
   try {
     data = await response.json()
   } catch (e) {
-    return null
+    data = null
   }
 
-  if (data.error) {
+  if (data && data.error) {
     notifications.error(data.error)
     throw new Error(data.error)
+  }
+
+  if (!response.ok) {
+    notifications.error(response.statusText)
+    throw new Error(response.statusText)
   }
 
   return data
@@ -51,6 +51,21 @@ export default {
 
     const response = await fetch(`${apiAddress}/event`, {
       method: 'POST',
+      headers,
+      body: JSON.stringify(event)
+    })
+
+    return getResponseData(response)
+  },
+
+  async updateEvent (eventId, event, token) {
+    const headers = {
+      'Content-Type': 'application/json',
+      token
+    }
+
+    const response = await fetch(`${apiAddress}/event/${eventId}`, {
+      method: 'PUT',
       headers,
       body: JSON.stringify(event)
     })

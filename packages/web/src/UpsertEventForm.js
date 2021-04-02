@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Col, Form } from 'react-bootstrap'
 import './EventForm.css'
 import whisbiApi from './api/whisbi'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import { getUserToken } from './store/slice/user'
 import { useSelector } from 'react-redux'
 import BackToEventsButton from './BackToEventsButton'
@@ -15,23 +15,48 @@ export default function UpsertEventForm () {
   const [location, setLocation] = useState('')
   const [state, setState] = useState('draft')
 
+  const { id: eventId } = useParams()
   const history = useHistory()
-  const userToken = useSelector(getUserToken)
+  const token = useSelector(getUserToken)
+
+  useEffect(() => {
+    (async () => {
+      if (eventId) {
+        const existingEvent = await whisbiApi.getEvent(eventId, token)
+        setHeadline(existingEvent.headline)
+        setDescription(existingEvent.description)
+        setStartDate(existingEvent.startDate)
+        setLocation(existingEvent.location)
+        setState(existingEvent.state)
+      }
+    })()
+  }, [])
 
   const submitForm = async (e) => {
     e.preventDefault()
 
-    await whisbiApi.createEvent({
-      headline,
-      description,
-      startDate,
-      location,
-      state
-    }, userToken)
+    if (eventId) {
+      await whisbiApi.updateEvent(eventId, {
+        headline,
+        description,
+        startDate,
+        location,
+        state
+      }, token)
+    } else {
+      await whisbiApi.createEvent({
+        headline,
+        description,
+        startDate,
+        location,
+        state
+      }, token)
+    }
 
     history.push('/')
 
-    notifications.success('Your event was created!')
+    const message = eventId ? 'Your event was updated!' : 'Your event was created!'
+    notifications.success(message)
   }
 
   return (

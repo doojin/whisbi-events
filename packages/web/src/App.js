@@ -35,6 +35,9 @@ function App () {
             <Route exact path="/event/my">
               <MyEvents/>
             </Route>
+            <Route exact path="/event/:id/edit">
+              <UpsertEventForm/>
+            </Route>
             <Route exact path="/event/:id">
               <EventDetails/>
             </Route>

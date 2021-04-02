@@ -20,6 +20,12 @@ export default function MyEvents () {
     })()
   }, [token])
 
+  const editButton = eventId => (
+    <Button onClick={() => history.push(`/event/${eventId}/edit`)}>
+      Edit
+    </Button>
+  )
+
   const deleteButton = eventId => (
     <Button onClick={async () => {
       await whisbiApi.deleteEvent(eventId, token)
@@ -37,7 +43,7 @@ export default function MyEvents () {
       <td>{ event.state }</td>
       <td><EventDate date={ event.startDate }/></td>
       <td className="text-center">
-        <Button>Edit</Button> { deleteButton(event.id) }
+        { editButton(event.id) } { deleteButton(event.id) }
       </td>
     </tr>
   ))
