@@ -1,0 +1,16 @@
+{
+  "name": "@whisbi-events/notification-service",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "lint": "eslint lib/**/*.ts",
+    "test": "jest --silent"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "@types/websocket": "^1.0.2",
+    "@whisbi-events/persistence": "^1.0.0",
+    "date-fns": "^2.19.0",
+    "websocket": "^1.0.33"
+  }
+}
