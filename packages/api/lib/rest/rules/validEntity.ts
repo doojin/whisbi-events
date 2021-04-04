@@ -12,7 +12,7 @@ export default function validEntity (entityName: string, requiredProperties: str
     }
 
     for (const requiredProperty of requiredProperties) {
-      if (entity[requiredProperty] === undefined) {
+      if (entity[requiredProperty] === undefined || entity[requiredProperty] === '') {
         res.status(422).json({ error: `${entityName} "${requiredProperty}" property is mandatory` })
         return
       }

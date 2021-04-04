@@ -1,0 +1,13 @@
+.LogoutButton .UserAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.LogoutButton .UserName {
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+.LogoutButton .UserLogout {
+    margin-left: 1rem;
+}

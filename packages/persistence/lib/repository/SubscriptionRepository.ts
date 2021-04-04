@@ -22,4 +22,19 @@ export default class SubscriptionRepository extends Repository<Subscription> {
       .innerJoinAndSelect('subscription.user', 'user')
       .getOne()
   }
+
+  async getUserSubscriptions (userId): Promise<Subscription[]> {
+    return await this.createQueryBuilder('subscription')
+      .innerJoin('subscription.user', 'user', 'user.id = :userId', { userId })
+      .innerJoinAndSelect('subscription.event', 'event')
+      .getMany()
+  }
+
+  async findSubscriptionsWithEvents (minDate: Date, maxDate: Date): Promise<Subscription[]> {
+    return this.createQueryBuilder('subscription')
+      .innerJoinAndSelect('subscription.user', 'user')
+      .innerJoinAndSelect('subscription.event', 'event')
+      .where('event.startDate between :minDate and :maxDate', { minDate, maxDate })
+      .getMany()
+  }
 }

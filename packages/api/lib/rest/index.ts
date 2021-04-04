@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import passport from 'passport'
 import bodyParser from 'body-parser'
 import createEvent from './endpoint/createEvent'
@@ -22,6 +23,10 @@ import deleteSubscription from './endpoint/deleteSubscription'
 import existingSubscription from './rules/event/subscription/existingSubscription'
 import userIsSubscriptionOwner from './rules/event/subscription/userIsSubscriptionOwner'
 import limitRequestsPerMinute from './rules/limitRequestsPerMinute'
+import googleAuthentication from './endpoint/googleAuthentication'
+import googleAccessTokenRequired from './rules/authentication/googleAccessTokenRequired'
+import getUserEvents from './endpoint/getUserEvents'
+import getUserSubscriptions from './endpoint/getUserSubscriptions'
 
 const validEventEntity = validEntity('Event', ['headline', 'description', 'startDate', 'location'])
 const validSubscriptionEntity = validEntity('Subscription', ['name', 'email'])
@@ -34,6 +39,7 @@ export default {
     app.use(bodyParser.json())
     app.use(passport.initialize())
     app.use(authenticate())
+    app.use(cors())
 
     // Rate limiter to protect form Denial of Service attacks.
     app.use(limitRequestsPerMinute({ perIpAddress: 250, perUserToken: 100 }))
@@ -104,6 +110,27 @@ export default {
       existingSubscription,
       userIsSubscriptionOwner,
       deleteSubscription
+    )
+
+    // Getting user token by Google account ID
+    router.post(
+      '/authentication/google',
+      googleAccessTokenRequired,
+      googleAuthentication
+    )
+
+    // Getting current user events
+    router.get(
+      '/user/event',
+      authenticated,
+      getUserEvents
+    )
+
+    // Getting current user subscriptions
+    router.get(
+      '/user/subscription',
+      authenticated,
+      getUserSubscriptions
     )
 
     return app.listen(port, () => {

@@ -49,6 +49,16 @@ describe('subscription repository', () => {
     return await getRepository(Event).save(event)
   }
 
+  async function generateEventWithDate (user: User, year: number, month: number, day: number): Promise<Event> {
+    const event = new Event()
+    event.headline = 'test-headline'
+    event.description = 'test-description'
+    event.startDate = new Date(Date.UTC(year, month, day, 0, 0, 0, 0))
+    event.location = 'test-location'
+    event.user = user
+    return await getRepository(Event).save(event)
+  }
+
   async function generateUserEventSubscription (event: Event, user: User): Promise<Subscription> {
     const subscription = new Subscription()
     subscription.name = 'test-name'
@@ -127,9 +137,163 @@ describe('subscription repository', () => {
         user: {
           id: 1,
           name: 'test-name',
-          photo: 'test-photo'
+          photo: 'test-photo',
+          googleId: null
         }
       })
+    })
+  })
+
+  describe('getUserSubscriptions', () => {
+    test('finds all user subscriptions', async () => {
+      const eventOwner = await generateUser()
+      const event1 = await generateEvent(eventOwner)
+      const event2 = await generateEvent(eventOwner)
+      const event3 = await generateEvent(eventOwner)
+      const event4 = await generateEvent(eventOwner)
+
+      const subscriber1 = await generateUser()
+      await generateUserEventSubscription(event1, subscriber1)
+      await generateUserEventSubscription(event2, subscriber1)
+
+      const subscriber2 = await generateUser()
+      await generateUserEventSubscription(event3, subscriber2)
+      await generateUserEventSubscription(event4, subscriber2)
+
+      const subscribtions = await subscriptionRepository.getUserSubscriptions(subscriber2.id)
+
+      expect(subscribtions).toEqual([
+        {
+          id: 3,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 3,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          }
+        },
+        {
+          id: 4,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 4,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          }
+        }
+      ])
+    })
+  })
+
+  describe('findSubscriptionsWithEvents', () => {
+    test('returns an array of subscriptions with corresponding events and subscribers', async () => {
+      const eventOwner = await generateUser()
+      const event1 = await generateEventWithDate(eventOwner, 1991, 0, 21) // event 1
+      const event2 = await generateEventWithDate(eventOwner, 1991, 1, 21) // event 2
+      const event3 = await generateEventWithDate(eventOwner, 1991, 2, 21) // event 3
+      const event4 = await generateEventWithDate(eventOwner, 1991, 3, 21) // event 4
+      const event5 = await generateEventWithDate(eventOwner, 1991, 4, 21) // event 5
+
+      const subscriber1 = await generateUser() // user 2
+      await generateUserEventSubscription(event1, subscriber1)
+      await generateUserEventSubscription(event2, subscriber1)
+      await generateUserEventSubscription(event3, subscriber1)
+
+      const subscriber2 = await generateUser() // user 3
+      await generateUserEventSubscription(event3, subscriber2)
+      await generateUserEventSubscription(event4, subscriber2)
+      await generateUserEventSubscription(event5, subscriber2)
+
+      const subscriptions = await subscriptionRepository.findSubscriptionsWithEvents(
+        new Date(Date.UTC(1991, 1, 21, 0, 0, 0, 0)),
+        new Date(Date.UTC(1991, 3, 21, 0, 0, 0, 0)))
+
+      expect(subscriptions).toEqual([
+        { // user2 subscribed to event2
+          id: 2,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 2,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 1, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          },
+          user: {
+            id: 2,
+            name: 'test-name',
+            photo: 'test-photo',
+            googleId: null
+          }
+        },
+        { // user2 subscribed to event3
+          id: 3,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 3,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          },
+          user: {
+            id: 2,
+            name: 'test-name',
+            photo: 'test-photo',
+            googleId: null
+          }
+        },
+        { // user3 subscribed to event3
+          id: 4,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 3,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          },
+          user: {
+            id: 3,
+            name: 'test-name',
+            photo: 'test-photo',
+            googleId: null
+          }
+        },
+        { // user3 subscribed to event4
+          id: 5,
+          name: 'test-name',
+          email: 'test-email',
+          event: {
+            id: 4,
+            headline: 'test-headline',
+            description: 'test-description',
+            location: 'test-location',
+            startDate: new Date(Date.UTC(1991, 3, 21, 0, 0, 0, 0)),
+            state: 'draft'
+          },
+          user: {
+            id: 3,
+            name: 'test-name',
+            photo: 'test-photo',
+            googleId: null
+          }
+        }
+      ])
     })
   })
 })

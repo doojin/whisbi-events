@@ -7,10 +7,10 @@ export default class User {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column()
+  @Column({ charset: 'utf8' })
   name!: string
 
-  @Column()
+  @Column({ charset: 'utf8' })
   photo!: string
 
   @OneToOne(() => Token, token => token.user)
@@ -18,4 +18,7 @@ export default class User {
 
   @OneToMany(() => Event, event => event.user)
   events!: Event[]
+
+  @Column({ nullable: true, charset: 'utf8' })
+  googleId?: string
 }

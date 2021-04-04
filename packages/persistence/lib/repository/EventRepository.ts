@@ -26,6 +26,12 @@ export default class EventRepository extends Repository<Event> {
       queryBuilder = queryBuilder.where('event.state in (:...states)', { states })
     }
 
-    return await queryBuilder.getMany()
+    return await queryBuilder.addOrderBy('event.id', 'DESC').getMany()
+  }
+
+  async findUserEvents (userId): Promise<Event[]> {
+    return this.createQueryBuilder('event')
+      .innerJoin('event.user', 'user', 'user.id = :userId', { userId })
+      .getMany()
   }
 }

@@ -7,16 +7,16 @@ export default class Event {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column()
+  @Column({ charset: 'utf8' })
   headline!: string
 
-  @Column()
+  @Column({ charset: 'utf8' })
   description!: string
 
   @Column()
   startDate!: Date
 
-  @Column()
+  @Column({ charset: 'utf8' })
   location!: string
 
   @Column({ type: 'enum', enum: EventState, default: EventState.DRAFT })

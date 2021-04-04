@@ -1,0 +1,48 @@
+version: "3.8"
+services:
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LANG: C.UTF-8
+    ports:
+      - "3306:3306"
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_general_ci", "--default-authentication-plugin=mysql_native_password"]
+  api:
+    environment:
+      DATABASE_NAME: ${MYSQL_DATABASE}
+      DATABASE_USER: ${MYSQL_USER}
+      DATABASE_PASSWORD: ${MYSQL_PASSWORD}
+    build: ./packages/api
+    volumes:
+      - ./:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mysql
+  notifications:
+    environment:
+      DATABASE_NAME: ${MYSQL_DATABASE}
+      DATABASE_USER: ${MYSQL_USER}
+      DATABASE_PASSWORD: ${MYSQL_PASSWORD}
+      PORT: 8001
+    build: ./packages/notifications
+    volumes:
+      - ./:/app
+    ports:
+      - "8001:8001"
+    depends_on:
+      - mysql
+      - api
+  web:
+    build: ./packages/web
+    volumes:
+      - ./:/app
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+      - notifications

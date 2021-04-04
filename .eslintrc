@@ -1,11 +1,18 @@
 {
-  "extends": "standard-with-typescript",
+  "extends": ["standard-with-typescript", "plugin:react/recommended"],
   "parserOptions": {
     "project": "./tsconfig.json"
   },
   "rules": {
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/consistent-type-assertions": "off",
-    "@typescript-eslint/return-await": "off"
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/no-dynamic-delete": "off",
+    "new-cap": "off",
+    "@typescript-eslint/no-misused-promises": "off"
+  },
+  "plugins": ["jest"],
+  "env": {
+    "jest/globals": true
   }
 }

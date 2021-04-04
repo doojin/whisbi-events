@@ -17,7 +17,7 @@ describe('user repository', () => {
     return await userRepository.save(user)
   }
 
-  async function generateUserEvent (user: User, state: EventState): Promise<Event> {
+  async function generateUserEvent (user: User, state: EventState = EventState.PUBLIC): Promise<Event> {
     const event = new Event()
     event.state = state
     event.headline = 'test-headline'
@@ -66,6 +66,7 @@ describe('user repository', () => {
         startDate: new Date(Date.UTC(1991, 2, 21, 0, 0, 0, 0)),
         state: EventState.PUBLIC,
         user: {
+          googleId: null,
           id: 1,
           name: 'test-user',
           photo: 'test-photo'
@@ -127,7 +128,23 @@ describe('user repository', () => {
       // private and public events are: 3, 4, 5, 6, 9, 10, 11, 12
       // after applying offset: 5, 6, 9, 10, 11, 12
       // after applying limit: 5, 6, 9, 10
-      expect(events.map(event => event.id)).toEqual([5, 6, 9, 10])
+      expect(events.map(event => event.id)).toEqual([10, 9, 6, 5])
+    })
+  })
+
+  describe('findUserEvents', () => {
+    test('returns user events', async () => {
+      const user1 = await generateUser()
+      await generateUserEvent(user1)
+      await generateUserEvent(user1)
+
+      const user2 = await generateUser()
+      await generateUserEvent(user2)
+      await generateUserEvent(user2)
+
+      const userEvents = await eventRepository.findUserEvents(user2.id)
+
+      expect(userEvents.map(event => event.id)).toEqual([3, 4])
     })
   })
 })

@@ -1,0 +1,16 @@
+.Event {
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.Event:hover {
+    background-color: #efefef;
+}
+
+.Event .Description {
+    font-style: italic;
+}
+
+.Event .Description:first-letter {
+    text-transform: capitalize;
+}
