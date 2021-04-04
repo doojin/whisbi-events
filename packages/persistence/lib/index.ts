@@ -16,6 +16,7 @@ import EventRepository from './repository/EventRepository'
 import SubscriptionRepository from './repository/SubscriptionRepository'
 
 export async function createConnection (
+  host: string,
   database: string,
   username: string,
   password: string,
@@ -27,6 +28,8 @@ export async function createConnection (
 ): Promise<Connection> {
   return await createDatabaseConnection({
     type: 'mysql',
+    charset: 'utf8mb4',
+    host: host,
     database,
     username,
     password,

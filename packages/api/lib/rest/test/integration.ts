@@ -32,7 +32,7 @@ export default class IntegrationTest {
   private oauth2
 
   async setUp (): Promise<void> {
-    this.connection = await createConnection('whisbi_test', 'test', 'test', true, true, [
+    this.connection = await createConnection('localhost', 'whisbi_test', 'test', 'test', true, true, [
       User,
       Token,
       Subscription,

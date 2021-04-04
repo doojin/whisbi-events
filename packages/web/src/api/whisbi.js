@@ -1,6 +1,6 @@
 import notifications from '../notifications'
 
-const apiAddress = 'http://localhost:8000/api/v1'
+const apiAddress = `http://${window.location.hostname}:8000/api/v1`
 
 async function getResponseData (response) {
   let data

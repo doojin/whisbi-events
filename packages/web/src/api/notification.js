@@ -1,7 +1,7 @@
 import { w3cwebsocket as W3CWebSocket } from 'websocket'
 import notifications from '../notifications'
 
-const SERVICE_URL = 'ws://localhost:8001/'
+const SERVICE_URL = `ws://${window.location.hostname}:8001/`
 
 export default {
   client: null,

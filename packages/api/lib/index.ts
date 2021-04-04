@@ -18,7 +18,7 @@ const SYNC_SCHEMA_ON_START = true;
   const username = process.env.DATABASE_USER as string
   const password = process.env.DATABASE_PASSWORD as string
 
-  await createConnection(database, username, password, SYNC_SCHEMA_ON_START, DROP_SCHEMA_ON_START)
+  await createConnection('mysql', database, username, password, SYNC_SCHEMA_ON_START, DROP_SCHEMA_ON_START)
 
   // Lets generate 10 default users
   for (let i = 0; i < 10; i++) {

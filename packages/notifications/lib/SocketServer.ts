@@ -15,7 +15,9 @@ export default class SocketServer {
   }
 
   public start (port: number): void {
-    this.httpServer.listen(port)
+    this.httpServer.listen(port, () => {
+      console.log(`Notification service started on port ${port}`)
+    })
 
     this.wsServer.on('request', (request: websocket.request) => {
       connectionRegistrator.register(request)

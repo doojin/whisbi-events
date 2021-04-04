@@ -6,7 +6,7 @@ export default class Token {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column()
+  @Column({ charset: 'utf8' })
   value!: string
 
   @OneToOne(() => User, user => user.token)

@@ -8,7 +8,7 @@ const port = parseInt(process.env.PORT as string);
   const username = process.env.DATABASE_USER as string
   const password = process.env.DATABASE_PASSWORD as string
 
-  await createConnection(database, username, password)
+  await createConnection('mysql', database, username, password)
 
   notificationService.start(port)
 })()

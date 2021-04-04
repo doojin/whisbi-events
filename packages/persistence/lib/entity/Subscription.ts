@@ -7,10 +7,10 @@ export default class Subscription {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @Column()
+  @Column({ charset: 'utf8' })
   name!: string
 
-  @Column()
+  @Column({ charset: 'utf8' })
   email!: string
 
   @ManyToOne(() => Event, { onDelete: 'CASCADE' })

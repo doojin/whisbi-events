@@ -115,7 +115,7 @@ export default function UpsertEventForm () {
           </Col>
         </Form.Row>
 
-        <Button type="submit">Save New Event</Button>
+        <Button type="submit">{ eventId ? 'Update event' : 'Create event' }</Button>
       </Form>
     </>
   )
