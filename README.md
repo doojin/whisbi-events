@@ -5,34 +5,61 @@
 So this project basically is a monorepo **(Lerna)** written in Typescript using 
 **Express framework** and **Typeorm**.
 
+## How to run the project?
+1. You clone the project to your machine
+2. You install project dependencies: `npm install`
+3. You bootstrap Lerna packages: `npm run bootstrap`
+4. You `compile` Typescript source code to Javascript output: `npm run compile`
+5. All application components will be running via Docker using `docker-compose`. 
+   Application is using MySQL database, so you need to manually create .env file with a couple 
+   of variables.:
+   
+   MYSQL_ROOT_PASSWORD=...
+   
+   MYSQL_DATABASE=...
+   
+   MYSQL_USER=...
+   
+   MYSQL_PASSWORD=...
+6. You run: `docker-compose build && docker-compose up`
+
 ## Why monorepo?
 
-Original idea was to create two independent of each other packages: 
-`REST API service` and a `Web Application` which will be consuming this API. 
-`Web application` can theoretically be replaced with any other client 
-(like `Mobile Application`, for instance).
-
-## However
-
-I want to be extremely honest here, on some point I realised that this project will be **really** 
-time-consuming (I like to dedicate time to carefully design the project architecture, 
-cover every peace of logic with unit tests, implement high-level integration tests, etc.)
-Since the project itself was time-scoped, I took a decision to sacrifice some functionality in favor
-of code and design quality to meet my personal coding standards, 
-that is why there will be no `Web Application` implemented. 
-Instead, I fully focused on `REST API service` implementation and did my best.
+During the architecture design I took a technical decision to decouple the REST API itself from 
+the web application that is consuming it (in the end, a typical API may have many different 
+clients: classical multi-page web application, SPA, mobile application, etc., right?) As a 
+result, project functionality was split between multiple packages.
 
 ## Project structure
 
-So the project consist of two sub-packages: `@whisbi-events/persistence` and `@whisbi-events/api`.
-The first one contains all the classes (entities, repositories, etc) to work with a database,
-and the second one contains the endpoints for CRUD operations with events/subscriptions.
+Project consists of:
+
+- `@whisbi-events/api` is an API REST* service
+- `@whisbi-events/web` is a React single page application - consumer of the API
+- `@whisbi-events/notifications` as a final result, web-socket notification service became a separate package 
+  (since it's functionality is not related to the REST API)
+- `@whisbi-events/persistence` package contains all the code related to the database persistence - 
+  functionality shared between `@whisbi-events/api` and `@whisbi-events/notification` packages
+
+(*) **Actually**, service is not following [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) pattern, so I would call it
+  RPC-service instead of REST-service, but this is just a formality :)
 
 ## Application design
 
 ![Application Design](img/app-design.png?raw=true "Application Design")
 
 This is the design of our REST service.
+
+API service is protected with tokens stored in a database. In order to authenticate an API request, 
+you need to send a `token` header with your token value.
+
+Now. React application allows users to authenticate via Google Profile API. React application 
+retrieves user's Google `access_token` and sends it to our API backend. Our API retrieves Google Profile 
+using given `access_token` and creates a new user (and API `token`) if user with given Google ID not exists yet.
+
+Using this authentication architecture our API is independent to different authentication strategies 
+(in the end, to access the API, one way or another the token from our database is needed). 
+Same way we can add authentication via Facebook API, Twitter API etc.
 
 Before user requests arrive to the `Express` endpoints they pass through API middleware 
 (implemented as Express middleware).
@@ -48,8 +75,8 @@ package interact with a database.
 
 ## Authentication
 
-User authentication is happening using access token strategy. Database contains a set of pre-defined users 
-(new users with corresponding tokens were supposed to be created via Web Application). In order to authenticate 
+As I said, authentication is happening using token strategy. 
+Database contains a set of users and corresponding tokens. In order to authenticate 
 API request, the `token` header is used.
 
 Then a custom middleware tries to find a user with given token in a database. In case if request does not 
@@ -122,7 +149,7 @@ The endpoints themselves are stored here: `packages/api/lib/rest/endpoint`
 
 ## Tests
 
-**Every peace** of project code that contains any sort of logic is covered with unit tests.
+**Every peace** of API code that contains any sort of logic is covered with unit tests.
 For testing, I use `Jest` library.
 
 Beside unit tests, every API endpoint contains a set of integration tests.
@@ -145,6 +172,12 @@ Build will:
 - Run the Linter 
 - Run unit tests
 - Set up real MySQL database and run the integration tests on it
+
+## Containerization
+
+As I said, project is split into multiple services running independently: API REST service,
+notification service and the web client (React app). In order to run all those together, 
+every of these package is containerized and then launched using docker-compose.
 
 ## Result
 
