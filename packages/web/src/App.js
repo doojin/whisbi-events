@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Header from './Header'
-import { useDispatch } from 'react-redux'
-import { setUser } from './store/slice/user'
+import { useDispatch, useSelector } from 'react-redux'
+import { getUserToken, setUser } from './store/slice/user'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import Events from './Events'
 import { Container } from 'react-bootstrap'
@@ -11,14 +11,24 @@ import EventDetails from './EventDetails'
 import ReactNotification from 'react-notifications-component'
 import MyEvents from './MyEvents'
 import MySubscriptions from './MySubscriptions'
+import notificationApi from './api/notification'
 
 function App () {
   const dispatch = useDispatch()
+  const token = useSelector(getUserToken)
   const localUser = localStorage.getItem('user')
 
   if (localUser) {
     dispatch(setUser(JSON.parse(localUser)))
   }
+
+  useEffect(() => {
+    if (token) {
+      notificationApi.createConnection(token)
+    } else {
+      notificationApi.disconnect()
+    }
+  }, [token])
 
   return (
     <div className="App">
