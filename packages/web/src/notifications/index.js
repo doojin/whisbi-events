@@ -22,5 +22,9 @@ export default {
 
   error (message) {
     sendNotification('Error!', message, 'danger')
+  },
+
+  info (message) {
+    sendNotification('Info!', message, 'info')
   }
 }
