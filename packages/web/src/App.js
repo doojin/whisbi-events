@@ -16,13 +16,14 @@ import notificationApi from './api/notification'
 function App () {
   const dispatch = useDispatch()
   const token = useSelector(getUserToken)
-  const localUser = localStorage.getItem('user')
-
-  if (localUser) {
-    dispatch(setUser(JSON.parse(localUser)))
-  }
 
   useEffect(() => {
+    const localUser = localStorage.getItem('user')
+
+    if (localUser) {
+      dispatch(setUser(JSON.parse(localUser)))
+    }
+
     if (token) {
       notificationApi.createConnection(token)
     } else {
