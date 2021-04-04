@@ -13,7 +13,7 @@ export default class Subscription {
   @Column()
   email!: string
 
-  @ManyToOne(() => Event)
+  @ManyToOne(() => Event, { onDelete: 'CASCADE' })
   event!: Event
 
   @ManyToOne(() => User)
