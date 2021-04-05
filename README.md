@@ -1,5 +1,14 @@
 [![Project Build](https://github.com/doojin/whisbi-events/actions/workflows/test-lint.yml/badge.svg)](https://github.com/doojin/whisbi-events/actions/workflows/test-lint.yml)
 
+# Foreword
+
+I need to confess that I spent much more time on this project than I originally planned. The reason for this is my 
+desire to show you guys my very best in different areas of software engineering, such as architectural design,
+programming (both back-end & front-end), testing, code delivery tools etc. In the end it resulted to the pretty big 
+codebase, but I want to ensure you that every peace of this project was crafted very carefully, patiently and with 
+attention to details. I hope you will dedicate some of your time to check my work with attention to all details 
+as well :)
+
 # About the project
 
 This project is a **Lerna** monorepo written in Typescript (**Express framework** / **React** / **TypeORM**)
@@ -145,6 +154,12 @@ trying it out in a real project.
 All application endpoints with corresponding middleware are set up here: `packages/api/lib/rest/index.ts`
 
 The endpoints themselves are stored here: `packages/api/lib/rest/endpoint`
+
+## Notification service
+
+It listens for connections via web sockets. It also queries database every X seconds for events starting in 24h. Then 
+it tries to find all active subscriber connections in connection pool for given events. Then it sends notification and 
+React application is receiving it and showing the notification.
 
 
 ## Tests
