@@ -14,6 +14,7 @@ as well :)
 This project is a **Lerna** monorepo written in Typescript (**Express framework** / **React** / **TypeORM**)
 
 ## How to run the project?
+Project is fully available online, but if for some reason (?) you will want to run it on your local machine:
 1. Clone the Github repository
 2. Install dependencies: `npm install`
 3. Bootstrap Lerna packages: `npm run bootstrap`
