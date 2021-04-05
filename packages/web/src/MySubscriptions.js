@@ -23,7 +23,7 @@ export default function MySubscriptions () {
   const unusbscribeButton = subscriptionId => (
     <Button onClick={async () => {
       await whisbiApi.deleteSubscription(subscriptionId, token)
-      history.go(0)
+      history.push('/')
       notifications.success('You have been unsubscribed from event')
     }}>
       Unusbscribe
