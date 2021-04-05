@@ -63,8 +63,8 @@ API service is using token authentication strategy. In order to authenticate a r
 
 React SPA allows users to log in with their Google accounts. Application 
 retrieves user's Google `access_token` and sends to out backend. Backend gets Google Profile 
-using given `access_token` and searches existing user in database by profile ID (or creates a new use 
-if not exists yet). Once user is found, backend responds with it's API token to the client 
+using given `access_token` and searches existing user in database by profile ID (or creates a new one 
+if user not exists yet). Once user is found, backend responds with it's API token to the client 
 (token is stored in browser local storage).
 
 This authentication architecture allows us implement different authentication strategies: By Google account,
