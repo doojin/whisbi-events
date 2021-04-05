@@ -181,10 +181,12 @@ every of these package is containerized and then launched using docker-compose.
 
 ## Result
 
-You can "touch" the API live here:  `http://94.176.233.132:8000/api/v1`. In order to do it, you need to use some REST 
-client (or plugin for your favourite browser).
+You can "play" with app live here: `http://events-whisbi.com/`
 
-For example, endpoint for public events: `GET - http://94.176.233.132:8000/api/v1/event`
+If you want to "touch" API directly, you can access it here:  `http://events-whisbi.com:8000/api/v1`. 
+In order to do so, you need to use a REST client (or plugin for your favourite browser).
+
+For example, endpoint for public events: `GET - http://events-whisbi.com:8000/api/v1/event`
 
 The list of available endpoints you can find here: `packages/api/lib/rest/index.ts`.
 

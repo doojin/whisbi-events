@@ -29,7 +29,7 @@ export default function MyEvents () {
   const deleteButton = eventId => (
     <Button onClick={async () => {
       await whisbiApi.deleteEvent(eventId, token)
-      history.go(0)
+      history.push('/')
       notifications.success('Your event was deleted')
     }}>
       Delete
